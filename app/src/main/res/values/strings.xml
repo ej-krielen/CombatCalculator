@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Geralt</string>
+
+    <!--Label-->
+    <string name="full_attack_label">Full attack:\u0020</string>
+    <string name="character_level_label">Character level:\u0020</string>
+    <string name="bab_label">BAB:\u0020</string>
+    <string name="strength_label">Strength:\u0020</string>
+    <string name="strength_modifier_label">Strength modifier:\u0020</string>
+    <string name="dexterity_label">Dexterity:\u0020</string>
+    <string name="dexterity_modifier_label">Dexterity modifier:\u0020</string>
+    <string name="weapon_enchant_label">Weapon enchant:\u0020</string>
+    <string name="misc_to_hit_label">Misc to hit:\u0020</string>
+    <string name="misc_damage_label">Misc damage:\u0020</string>
+
+    <!--Error-->
+    <string name="error_stat_not_found">Stat not found</string>
+
+</resources>

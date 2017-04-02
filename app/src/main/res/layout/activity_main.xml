@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="nl.rekijan.geralt.activities.MainActivity">
+
+    <TextView
+        android:id="@+id/full_attack_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:text="@string/error_stat_not_found"
+        app:layout_constraintLeft_toRightOf="@+id/full_attack_label"
+        app:layout_constraintTop_toTopOf="@+id/full_attack_label" />
+
+    <TextView
+        android:id="@+id/full_attack_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/full_attack_label"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/character_level_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/character_level_label"
+        app:layout_constraintLeft_toLeftOf="@+id/full_attack_label"
+        app:layout_constraintTop_toBottomOf="@+id/full_attack_label" />
+
+    <TextView
+        android:id="@+id/character_level_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:text="@string/error_stat_not_found"
+        app:layout_constraintLeft_toRightOf="@+id/character_level_label"
+        app:layout_constraintTop_toTopOf="@+id/character_level_label" />
+
+    <TextView
+        android:id="@+id/bab_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/bab_label"
+        app:layout_constraintLeft_toLeftOf="@+id/character_level_label"
+        app:layout_constraintTop_toBottomOf="@+id/character_level_label" />
+
+    <TextView
+        android:id="@+id/bab_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:text="@string/error_stat_not_found"
+        app:layout_constraintLeft_toRightOf="@+id/bab_label"
+        app:layout_constraintTop_toTopOf="@+id/bab_label" />
+
+    <TextView
+        android:id="@+id/strength_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/strength_label"
+        app:layout_constraintLeft_toLeftOf="@+id/character_level_label"
+        app:layout_constraintTop_toBottomOf="@+id/bab_textView" />
+
+    <TextView
+        android:id="@+id/strength_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:text="@string/error_stat_not_found"
+        app:layout_constraintLeft_toRightOf="@+id/strength_label"
+        app:layout_constraintTop_toTopOf="@+id/strength_label" />
+
+    <TextView
+        android:id="@+id/strength_modifier_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/strength_modifier_label"
+        app:layout_constraintLeft_toLeftOf="@+id/character_level_label"
+        app:layout_constraintTop_toBottomOf="@+id/strength_textView" />
+
+    <TextView
+        android:id="@+id/strength_modifier_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:text="@string/error_stat_not_found"
+        app:layout_constraintLeft_toRightOf="@+id/strength_modifier_label"
+        app:layout_constraintTop_toTopOf="@+id/strength_modifier_label" />
+
+    <TextView
+        android:id="@+id/dexterity_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/dexterity_label"
+        app:layout_constraintLeft_toLeftOf="@+id/character_level_label"
+        app:layout_constraintTop_toBottomOf="@+id/strength_modifier_textView" />
+
+    <TextView
+        android:id="@+id/dexterity_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:text="@string/error_stat_not_found"
+        app:layout_constraintLeft_toRightOf="@+id/dexterity_label"
+        app:layout_constraintTop_toTopOf="@+id/dexterity_label" />
+
+    <TextView
+        android:id="@+id/dexterity_modifier_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/dexterity_modifier_label"
+        app:layout_constraintLeft_toLeftOf="@+id/character_level_label"
+        app:layout_constraintTop_toBottomOf="@+id/dexterity_textView" />
+
+    <TextView
+        android:id="@+id/dexterity_modifier_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:text="@string/error_stat_not_found"
+        app:layout_constraintLeft_toRightOf="@+id/dexterity_modifier_label"
+        app:layout_constraintTop_toTopOf="@+id/dexterity_modifier_label" />
+
+    <TextView
+        android:id="@+id/weapon_enchant_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/weapon_enchant_label"
+        app:layout_constraintLeft_toLeftOf="@+id/character_level_label"
+        app:layout_constraintTop_toBottomOf="@+id/dexterity_modifier_textView" />
+
+    <TextView
+        android:id="@+id/weapon_enchant_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:text="@string/error_stat_not_found"
+        app:layout_constraintLeft_toRightOf="@+id/weapon_enchant_label"
+        app:layout_constraintTop_toTopOf="@+id/weapon_enchant_label" />
+
+    <TextView
+        android:id="@+id/misc_to_hit_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/misc_to_hit_label"
+        app:layout_constraintLeft_toLeftOf="@+id/character_level_label"
+        app:layout_constraintTop_toBottomOf="@+id/weapon_enchant_textView" />
+
+    <TextView
+        android:id="@+id/misc_to_hit_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:text="@string/error_stat_not_found"
+        app:layout_constraintLeft_toRightOf="@+id/misc_to_hit_label"
+        app:layout_constraintTop_toTopOf="@+id/misc_to_hit_label" />
+
+    <TextView
+        android:id="@+id/misc_damage_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/misc_damage_label"
+        app:layout_constraintLeft_toLeftOf="@+id/character_level_label"
+        app:layout_constraintTop_toBottomOf="@+id/misc_to_hit_label" />
+
+    <TextView
+        android:id="@+id/misc_damage_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:text="@string/error_stat_not_found"
+        app:layout_constraintLeft_toRightOf="@+id/misc_damage_label"
+        app:layout_constraintTop_toTopOf="@+id/misc_damage_label" />
+
+</android.support.constraint.ConstraintLayout>
