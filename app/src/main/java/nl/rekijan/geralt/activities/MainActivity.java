@@ -15,14 +15,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        CharacterStatsModel geralt = new CharacterStatsModel();
-        geralt.setCharacterLevel(10);
-        geralt.setBab(7);
-        geralt.setStrength(16);
-        geralt.setDexterity(14);
-        geralt.setWeaponEnchant(2);
-        geralt.setMiscToHit(0);
-        geralt.setMiscDamage(0);
+        CharacterStatsModel geralt = new CharacterStatsModel(10, 7, 16, 14, 0, 0);
+        geralt.addAttack("greatsword", "2d6", 2, true, true, false, false, true, false, "19-20", "x2");
 
         TextView fullAttackTextView = (TextView) findViewById(R.id.full_attack_textView);
         fullAttackTextView.setText(MathHelper.getInstance().fullAttackString(geralt));
@@ -39,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         TextView dexterityModifierTextView = (TextView) findViewById(R.id.dexterity_modifier_textView);
         dexterityModifierTextView.setText(String.valueOf(geralt.getDexterityModifier()));
         TextView weaponEnchantTextView = (TextView) findViewById(R.id.weapon_enchant_textView);
-        weaponEnchantTextView.setText(String.valueOf(geralt.getWeaponEnchant()));
+        weaponEnchantTextView.setText(String.valueOf(geralt.getAttacks().get(0).getWeaponEchant()));
         TextView miscToHitTextView = (TextView) findViewById(R.id.misc_to_hit_textView);
         miscToHitTextView.setText(String.valueOf(geralt.getMiscToHit()));
         TextView miscDamageTextView = (TextView) findViewById(R.id.misc_damage_textView);
