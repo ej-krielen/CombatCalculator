@@ -3,6 +3,7 @@ package nl.rekijan.geralt.model;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import nl.rekijan.geralt.model.buffs.BuffInterface;
 import nl.rekijan.geralt.utility.MathHelper;
 
 /**
@@ -24,6 +25,7 @@ public class CharacterStatsModel {
     private int miscDamage;
 
     private ArrayList<AttackModel> attackList = new ArrayList<>();
+    private ArrayList<BuffInterface> buffList = new ArrayList<>();
 
     public CharacterStatsModel(int characterLevel, int bab, int strength, int dexterity,
                                int miscToHit, int miscDamage) {
@@ -57,6 +59,19 @@ public class CharacterStatsModel {
     //TODO add searchable?
     public ArrayList<AttackModel> getAttacks() {
         return attackList;
+    }
+
+    public void addBuff(BuffInterface buff) {
+        buffList.add(buff);
+    }
+
+    public void removeBuff() {
+        //TODO
+    }
+
+    //TODO add searchable?
+    public ArrayList<BuffInterface> getBuffs() {
+        return buffList;
     }
 
     //Getters and setters

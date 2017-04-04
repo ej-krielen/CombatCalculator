@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import nl.rekijan.geralt.R;
 import nl.rekijan.geralt.model.CharacterStatsModel;
+import nl.rekijan.geralt.model.buffs.PowerAttack;
 import nl.rekijan.geralt.utility.MathHelper;
 
 public class MainActivity extends AppCompatActivity {
@@ -15,8 +16,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        CharacterStatsModel geralt = new CharacterStatsModel(10, 7, 16, 14, 0, 0);
+        CharacterStatsModel geralt = new CharacterStatsModel(10, 7, 18, 14, 0, 0);
         geralt.addAttack("greatsword", "2d6", 2, true, true, false, false, true, false, "19-20", "x2");
+        PowerAttack powerAttack = new PowerAttack();
+        powerAttack.setIsActive(true);
+        geralt.addBuff(powerAttack);
 
         TextView fullAttackTextView = (TextView) findViewById(R.id.full_attack_textView);
         fullAttackTextView.setText(MathHelper.getInstance().fullAttackString(geralt));

@@ -7,6 +7,7 @@ import java.util.List;
 
 import nl.rekijan.geralt.model.AttackModel;
 import nl.rekijan.geralt.model.CharacterStatsModel;
+import nl.rekijan.geralt.model.buffs.BuffInterface;
 
 import static java.util.Arrays.asList;
 
@@ -43,39 +44,83 @@ public class MathHelper {
     }
 
     public String fullAttackString(CharacterStatsModel character) {
-        String output = "";
-        int fullBABAttackModifier = 0;
+
         ArrayList<AttackModel> attacks = character.getAttacks();
         //TODO use all attacks
         AttackModel primaryAttack = attacks.get(0);
         if (primaryAttack == null) return "No attacks defined";
 
-        output += primaryAttack.getName();
-        output += " +";
+        //Calculate to hit and damage before buffs
+        int fullBabAttackModifier = calculateFullBabAttackModifier(character, primaryAttack);
+        int damage = calculateDamageModifier(character, primaryAttack);
+        //Now apply buffs
+        for (BuffInterface buff : character.getBuffs()) { //TODO prevent types from stacking
+            if (buff.isActive()) {
+                fullBabAttackModifier += buff.calculateToHit(character, primaryAttack);
+                damage += buff.calculateDamage(character, primaryAttack);
+            }
+        }
 
-        fullBABAttackModifier += character.getBab();
-        //Get strength or dexterity
-        fullBABAttackModifier += (primaryAttack.isFinesseable() ? character.getDexterityModifier() :
-                character.getStrengthModifier());
-        fullBABAttackModifier += primaryAttack.getWeaponEchant();
-        fullBABAttackModifier += character.getMiscToHit();
-        output += String.valueOf(fullBABAttackModifier);
+        String attackRoutine = String.valueOf(fullBabAttackModifier);
         if (character.getBab() >= 6) {
-            output += "/+";
-            output += String.valueOf(fullBABAttackModifier - 5);
+            attackRoutine += "/+";
+            attackRoutine += String.valueOf(fullBabAttackModifier - 5);
         }
         //TODO check for hasted
         if (character.getBab() >= 11) {
-            output += "/+";
-            output += String.valueOf(fullBABAttackModifier - 10);
+            attackRoutine += "/+";
+            attackRoutine += String.valueOf(fullBabAttackModifier - 10);
         }
         if (character.getBab() >= 16) {
-            output += "/+";
-            output += String.valueOf(fullBABAttackModifier - 15);
+            attackRoutine += "/+";
+            attackRoutine += String.valueOf(fullBabAttackModifier - 15);
         }
 
-        output += calculateDamageModifier(character, primaryAttack);
+        return String.format("%s +%s (%s+%s %s%s%s)",
+                primaryAttack.getName(), attackRoutine, primaryAttack.getWeaponDice(),
+                damage, primaryAttack.getCritRange(),
+                (TextUtils.isEmpty(primaryAttack.getCritRange()) ? "" : "/" ),
+                primaryAttack.getCritMultiplier());
+    }
+
+    /**
+     * Calculates to hit before buffs
+     * @param character provides stats for calculations
+     * @param attack provides stats for calculations
+     * @return value of to hit
+     */
+    private int calculateFullBabAttackModifier(CharacterStatsModel character, AttackModel attack) {
+        int output = 0;
+        output += character.getBab();
+        //Get strength or dexterity
+        output += (attack.isFinesseable() ? character.getDexterityModifier() : character.getStrengthModifier());
+        output += attack.getWeaponEchant();
+        output += character.getMiscToHit();
         return output;
+    }
+
+    /**
+     * Calculates damage before buffs
+     * @param character provides stats for calculations
+     * @param attack provides stats for calculations
+     * @return
+     */
+    private int calculateDamageModifier(CharacterStatsModel character, AttackModel attack) {
+        int dmg = 0;
+
+        int abilityModifier = character.getStrengthModifier(); //TODO enable option for dex to damage
+        if (attack.isTwoHandedWeapon()) {
+            dmg += Math.floor(abilityModifier * 1.5);
+        } else if (attack.isLigthWeapon()) {
+            dmg += abilityModifier * 0.5;
+        } else {
+            dmg += abilityModifier;
+        }
+
+        dmg += attack.getWeaponEchant();
+        dmg += character.getMiscDamage();
+
+        return dmg;
     }
 
     private List<String> weaponDiceList = new ArrayList<>(asList("1d2", "1d3", "1d4", "1d6",
@@ -102,41 +147,4 @@ public class MathHelper {
         return startingWeaponDamageDice;
     }
 
-    private String calculateDamageModifier(CharacterStatsModel character, AttackModel attack) {
-
-        String output = " (";
-        output += attack.getWeaponDice();
-        output += "+";
-
-        int dmg = 0;
-
-        int abilityModifier = character.getStrengthModifier(); //TODO enable dex to damage
-        if (attack.isTwoHandedWeapon()) {
-            dmg += Math.floor(abilityModifier * 1.5);
-        } else if (attack.isLigthWeapon()) {
-            dmg += abilityModifier * 0.5;
-        } else {
-            dmg += abilityModifier;
-        }
-
-        dmg += attack.getWeaponEchant();
-        dmg += character.getMiscDamage();
-
-        output += String.valueOf(dmg);
-
-        output += " ";
-        if (!TextUtils.isEmpty(attack.getCritRange())) {
-            output += attack.getCritRange();
-            output += "/";
-            if (TextUtils.isEmpty(attack.getCritMultiplier())) {
-                output += "x2";
-            }
-        }
-        if (!TextUtils.isEmpty(attack.getCritMultiplier())) {
-            output += attack.getCritMultiplier();
-        }
-        output += ")";
-
-        return output;
-    }
 }
