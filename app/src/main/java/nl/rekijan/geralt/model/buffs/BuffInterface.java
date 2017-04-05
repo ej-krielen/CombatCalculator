@@ -19,4 +19,9 @@ public interface BuffInterface {
     String getType();
     boolean isActive();
     void setIsActive(boolean isActive);
+
+    boolean grantsExtraAttack();
+
+    int creatureSizeIncrease();
+    int weaponSizeIncrease();
 }

@@ -4,26 +4,31 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import nl.rekijan.geralt.R;
 import nl.rekijan.geralt.model.CharacterStatsModel;
+import nl.rekijan.geralt.model.buffs.BuffInterface;
 import nl.rekijan.geralt.model.buffs.PowerAttack;
 import nl.rekijan.geralt.utility.MathHelper;
 
 public class MainActivity extends AppCompatActivity {
+
+    private ArrayList<BuffInterface> buffList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        CharacterStatsModel geralt = new CharacterStatsModel(10, 7, 18, 14, 0, 0);
+        CharacterStatsModel geralt = new CharacterStatsModel(10, 7, 18, 14, 0, 0, 0);
         geralt.addAttack("greatsword", "2d6", 2, true, true, false, false, true, false, "19-20", "x2");
         PowerAttack powerAttack = new PowerAttack();
         powerAttack.setIsActive(true);
-        geralt.addBuff(powerAttack);
+        buffList.add(powerAttack);
 
         TextView fullAttackTextView = (TextView) findViewById(R.id.full_attack_textView);
-        fullAttackTextView.setText(MathHelper.getInstance().fullAttackString(geralt));
+        fullAttackTextView.setText(MathHelper.getInstance().fullAttackString(this, geralt));
         TextView characterLevelTextView = (TextView) findViewById(R.id.character_level_textView);
         characterLevelTextView.setText(String.valueOf(geralt.getCharacterLevel()));
         TextView babTextView = (TextView) findViewById(R.id.bab_textView);
@@ -42,5 +47,13 @@ public class MainActivity extends AppCompatActivity {
         miscToHitTextView.setText(String.valueOf(geralt.getMiscToHit()));
         TextView miscDamageTextView = (TextView) findViewById(R.id.misc_damage_textView);
         miscDamageTextView.setText(String.valueOf(geralt.getMiscDamage()));
+    }
+
+    public ArrayList<BuffInterface> getBuffList() {
+        return buffList;
+    }
+
+    public void setBuffList(ArrayList<BuffInterface> buffList) {
+        this.buffList = buffList;
     }
 }

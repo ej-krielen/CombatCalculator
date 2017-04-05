@@ -5,11 +5,24 @@ import android.text.TextUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import nl.rekijan.geralt.activities.MainActivity;
 import nl.rekijan.geralt.model.AttackModel;
 import nl.rekijan.geralt.model.CharacterStatsModel;
 import nl.rekijan.geralt.model.buffs.BuffInterface;
 
 import static java.util.Arrays.asList;
+import static nl.rekijan.geralt.AppConstants.BUFF_TYPE_ALCHEMICAL;
+import static nl.rekijan.geralt.AppConstants.BUFF_TYPE_CIRCUMSTANCE;
+import static nl.rekijan.geralt.AppConstants.BUFF_TYPE_COMPETENCE;
+import static nl.rekijan.geralt.AppConstants.BUFF_TYPE_ENHANCEMENT;
+import static nl.rekijan.geralt.AppConstants.BUFF_TYPE_INHERENT;
+import static nl.rekijan.geralt.AppConstants.BUFF_TYPE_INSIGHT;
+import static nl.rekijan.geralt.AppConstants.BUFF_TYPE_LUCK;
+import static nl.rekijan.geralt.AppConstants.BUFF_TYPE_MORALE;
+import static nl.rekijan.geralt.AppConstants.BUFF_TYPE_PROFANE;
+import static nl.rekijan.geralt.AppConstants.BUFF_TYPE_RACIAL;
+import static nl.rekijan.geralt.AppConstants.BUFF_TYPE_SACRED;
+import static nl.rekijan.geralt.AppConstants.BUFF_TYPE_TRAIT;
 
 /**
  * Utility class for calculations
@@ -43,7 +56,7 @@ public class MathHelper {
         }
     }
 
-    public String fullAttackString(CharacterStatsModel character) {
+    public String fullAttackString(MainActivity mainActivity, CharacterStatsModel character) {
 
         ArrayList<AttackModel> attacks = character.getAttacks();
         //TODO use all attacks
@@ -53,20 +66,153 @@ public class MathHelper {
         //Calculate to hit and damage before buffs
         int fullBabAttackModifier = calculateFullBabAttackModifier(character, primaryAttack);
         int damage = calculateDamageModifier(character, primaryAttack);
+
         //Now apply buffs
-        for (BuffInterface buff : character.getBuffs()) { //TODO prevent types from stacking
+        //Keep track of bonuses that don't stack
+        int alchemicalAttack = 0;
+        int alchemicalDamage = 0;
+        int circumstanceAttack = 0;
+        int circumstanceDamage = 0;
+        int competenceAttack = 0;
+        int competenceDamage = 0;
+        int enhancementAttack = 0;
+        int enhancementDamage = 0;
+        int inherentAttack = 0;
+        int inherentDamage = 0;
+        int insightAttack = 0;
+        int insightDamage = 0;
+        int luckAttack = 0;
+        int luckDamage = 0;
+        int moraleAttack = 0;
+        int moraleDamage = 0;
+        int profaneAttack = 0;
+        int profaneDamage = 0;
+        int racialAttack = 0;
+        int racialDamage = 0;
+        int sacredAttack = 0;
+        int sacredDamage = 0;
+        int traitAttack = 0;
+        int traitDamage = 0;
+        int untypedAttack = 0;
+        int untypedDamage = 0;
+
+        boolean extraAttack = false;
+        int increasesCreatureSize = 0;
+        int increaseWeaponSize = 0;
+
+        for (BuffInterface buff : mainActivity.getBuffList()) {
             if (buff.isActive()) {
-                fullBabAttackModifier += buff.calculateToHit(character, primaryAttack);
-                damage += buff.calculateDamage(character, primaryAttack);
+
+                if (buff.grantsExtraAttack()) extraAttack = true;
+                int buffCreatureSize = buff.creatureSizeIncrease();
+                int buffWeaponSize = buff.weaponSizeIncrease();
+                increasesCreatureSize = buffCreatureSize > increasesCreatureSize ? buffCreatureSize : increasesCreatureSize;
+                increasesCreatureSize += buffCreatureSize < 0 ? buffCreatureSize : 0;
+                increaseWeaponSize = (buffWeaponSize > increaseWeaponSize ? buffWeaponSize : increaseWeaponSize);
+                increaseWeaponSize += buffWeaponSize < 0 ? buffWeaponSize : 0;
+
+
+                int buffToHit = buff.calculateToHit(character, primaryAttack);
+                int buffDamage = buff.calculateDamage(character, primaryAttack);
+                switch (buff.getType()) {
+                    case BUFF_TYPE_ALCHEMICAL:
+                        alchemicalAttack = (buffToHit > alchemicalAttack ? buffToHit : alchemicalAttack);
+                        alchemicalDamage = (buffToHit > alchemicalDamage ? buffDamage : alchemicalDamage);
+                        alchemicalAttack += buffToHit < 0 ? buffToHit : 0;
+                        alchemicalDamage += buffDamage < 0 ? buffDamage : 0;
+                        break;
+                    case BUFF_TYPE_CIRCUMSTANCE:
+                        circumstanceAttack = (buffToHit > circumstanceAttack ? buffToHit : circumstanceAttack);
+                        circumstanceDamage = (buffToHit > circumstanceDamage ? buffDamage : circumstanceDamage);
+                        circumstanceAttack += buffToHit < 0 ? buffToHit : 0;
+                        circumstanceDamage += buffDamage < 0 ? buffDamage : 0;
+                        break;
+                    case BUFF_TYPE_COMPETENCE:
+                        competenceAttack = (buffToHit > competenceAttack ? buffToHit : competenceAttack);
+                        competenceDamage = (buffToHit > competenceDamage ? buffDamage : competenceDamage);
+                        competenceAttack += buffToHit < 0 ? buffToHit : 0;
+                        competenceDamage += buffDamage < 0 ? buffDamage : 0;
+                        break;
+                    case BUFF_TYPE_ENHANCEMENT:
+                        enhancementAttack = (buffToHit > enhancementAttack ? buffToHit : enhancementAttack);
+                        enhancementDamage = (buffToHit > enhancementDamage ? buffDamage : enhancementDamage);
+                        enhancementAttack += buffToHit < 0 ? buffToHit : 0;
+                        enhancementDamage += buffDamage < 0 ? buffDamage : 0;
+                        break;
+                    case BUFF_TYPE_INHERENT:
+                        inherentAttack = (buffToHit > inherentAttack ? buffToHit : inherentAttack);
+                        inherentDamage = (buffToHit > inherentDamage ? buffDamage : inherentDamage);
+                        inherentAttack += buffToHit < 0 ? buffToHit : 0;
+                        inherentDamage += buffDamage < 0 ? buffDamage : 0;
+                        break;
+                    case BUFF_TYPE_INSIGHT:
+                        insightAttack = (buffToHit > insightAttack ? buffToHit : insightAttack);
+                        insightDamage = (buffToHit > insightDamage ? buffDamage : insightDamage);
+                        insightAttack += buffToHit < 0 ? buffToHit : 0;
+                        insightDamage += buffDamage < 0 ? buffDamage : 0;
+                        break;
+                    case BUFF_TYPE_LUCK:
+                        luckAttack = (buffToHit > luckAttack ? buffToHit : luckAttack);
+                        luckDamage = (buffToHit > luckDamage ? buffDamage : luckDamage);
+                        luckAttack += buffToHit < 0 ? buffToHit : 0;
+                        luckDamage += buffDamage < 0 ? buffDamage : 0;
+                        break;
+                    case BUFF_TYPE_MORALE:
+                        moraleAttack = (buffToHit > moraleAttack ? buffToHit : moraleAttack);
+                        moraleDamage = (buffToHit > moraleDamage ? buffDamage : moraleDamage);
+                        moraleAttack += buffToHit < 0 ? buffToHit : 0;
+                        moraleDamage += buffDamage < 0 ? buffDamage : 0;
+                        break;
+                    case BUFF_TYPE_PROFANE:
+                        profaneAttack = (buffToHit > profaneAttack ? buffToHit : profaneAttack);
+                        profaneDamage = (buffToHit > profaneDamage ? buffDamage : profaneDamage);
+                        profaneAttack += buffToHit < 0 ? buffToHit : 0;
+                        profaneDamage += buffDamage < 0 ? buffDamage : 0;
+                        break;
+                    case BUFF_TYPE_RACIAL:
+                        racialAttack = (buffToHit > racialAttack ? buffToHit : racialAttack);
+                        racialDamage = (buffToHit > racialDamage ? buffDamage : racialDamage);
+                        racialAttack += buffToHit < 0 ? buffToHit : 0;
+                        racialDamage += buffDamage < 0 ? buffDamage : 0;
+                        break;
+                    case BUFF_TYPE_SACRED:
+                        sacredAttack = (buffToHit > sacredAttack ? buffToHit : sacredAttack);
+                        sacredDamage = (buffToHit > sacredDamage ? buffDamage : sacredDamage);
+                        sacredAttack += buffToHit < 0 ? buffToHit : 0;
+                        sacredDamage += buffDamage < 0 ? buffDamage : 0;
+                        break;
+                    case BUFF_TYPE_TRAIT:
+                        traitAttack = (buffToHit > traitAttack ? buffToHit : traitAttack);
+                        traitDamage = (buffToHit > traitDamage ? buffDamage : traitDamage);
+                        traitAttack += buffToHit < 0 ? buffToHit : 0;
+                        traitDamage += buffDamage < 0 ? buffDamage : 0;
+                        break;
+                    default:
+                        untypedAttack += buffToHit;  //Untyped bonuses can stack
+                        untypedDamage += buffDamage; //Untyped bonuses can stack
+                        break;
+                }
+
             }
         }
 
+        fullBabAttackModifier += alchemicalAttack + circumstanceAttack + competenceAttack +
+                enhancementAttack + inherentAttack + insightAttack + luckAttack + moraleAttack +
+                profaneAttack + racialAttack + sacredAttack + traitAttack + untypedAttack;
+        damage += alchemicalDamage + circumstanceDamage + competenceDamage + enhancementDamage +
+                inherentDamage + insightDamage + luckDamage + moraleDamage + profaneDamage +
+                racialDamage + sacredDamage + traitDamage+ untypedDamage;
+
         String attackRoutine = String.valueOf(fullBabAttackModifier);
+
+        if (extraAttack) {
+            attackRoutine += "/";
+            attackRoutine += String.valueOf(fullBabAttackModifier);
+        }
         if (character.getBab() >= 6) {
             attackRoutine += "/+";
             attackRoutine += String.valueOf(fullBabAttackModifier - 5);
         }
-        //TODO check for hasted
         if (character.getBab() >= 11) {
             attackRoutine += "/+";
             attackRoutine += String.valueOf(fullBabAttackModifier - 10);
@@ -76,9 +222,11 @@ public class MathHelper {
             attackRoutine += String.valueOf(fullBabAttackModifier - 15);
         }
 
+        String weaponDiceString = getWeaponDamageDiceString((increasesCreatureSize + increaseWeaponSize), primaryAttack.getWeaponDice());
+
         return String.format("%s +%s (%s+%s %s%s%s)",
-                primaryAttack.getName(), attackRoutine, primaryAttack.getWeaponDice(),
-                damage, primaryAttack.getCritRange(),
+                primaryAttack.getName(), attackRoutine, weaponDiceString, damage,
+                primaryAttack.getCritRange(),
                 (TextUtils.isEmpty(primaryAttack.getCritRange()) ? "" : "/" ),
                 primaryAttack.getCritMultiplier());
     }
@@ -87,7 +235,7 @@ public class MathHelper {
      * Calculates to hit before buffs
      * @param character provides stats for calculations
      * @param attack provides stats for calculations
-     * @return value of to hit
+     * @return value of to hit before buffs
      */
     private int calculateFullBabAttackModifier(CharacterStatsModel character, AttackModel attack) {
         int output = 0;
@@ -96,6 +244,7 @@ public class MathHelper {
         output += (attack.isFinesseable() ? character.getDexterityModifier() : character.getStrengthModifier());
         output += attack.getWeaponEchant();
         output += character.getMiscToHit();
+        output += character.getSizeModifier();
         return output;
     }
 
@@ -103,7 +252,7 @@ public class MathHelper {
      * Calculates damage before buffs
      * @param character provides stats for calculations
      * @param attack provides stats for calculations
-     * @return
+     * @return damage before buffs
      */
     private int calculateDamageModifier(CharacterStatsModel character, AttackModel attack) {
         int dmg = 0;
@@ -136,7 +285,7 @@ public class MathHelper {
      * @param startingWeaponDamageDice start value
      * @return new value of weapon damage dice
      */
-    public String getNextWeaponDamageDice(int numberOfSteps, String startingWeaponDamageDice) {
+    private String getWeaponDamageDiceString(int numberOfSteps, String startingWeaponDamageDice) {
         if (weaponDiceList.contains(startingWeaponDamageDice)) {
             int currentIndex = weaponDiceList.indexOf(startingWeaponDamageDice);
             return weaponDiceList.get(currentIndex + numberOfSteps);

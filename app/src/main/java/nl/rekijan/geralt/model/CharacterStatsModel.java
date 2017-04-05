@@ -3,7 +3,6 @@ package nl.rekijan.geralt.model;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import nl.rekijan.geralt.model.buffs.BuffInterface;
 import nl.rekijan.geralt.utility.MathHelper;
 
 /**
@@ -23,12 +22,12 @@ public class CharacterStatsModel {
     private int dexterityModifier;
     private int miscToHit;
     private int miscDamage;
+    private int sizeModifier;
 
     private ArrayList<AttackModel> attackList = new ArrayList<>();
-    private ArrayList<BuffInterface> buffList = new ArrayList<>();
 
     public CharacterStatsModel(int characterLevel, int bab, int strength, int dexterity,
-                               int miscToHit, int miscDamage) {
+                               int miscToHit, int miscDamage, int sizeModifier) {
         this.characterLevel = characterLevel;
         this.bab = bab;
         this.strength = strength;
@@ -37,6 +36,7 @@ public class CharacterStatsModel {
         this.dexterityModifier = MathHelper.getInstance().abilityModifier(dexterity);
         this.miscToHit = miscToHit;
         this.miscDamage = miscDamage;
+        this.sizeModifier = sizeModifier;
     }
 
     public void addAttack(String name, String weaponDice, int weaponEnchant, boolean isMelee,
@@ -59,19 +59,6 @@ public class CharacterStatsModel {
     //TODO add searchable?
     public ArrayList<AttackModel> getAttacks() {
         return attackList;
-    }
-
-    public void addBuff(BuffInterface buff) {
-        buffList.add(buff);
-    }
-
-    public void removeBuff() {
-        //TODO
-    }
-
-    //TODO add searchable?
-    public ArrayList<BuffInterface> getBuffs() {
-        return buffList;
     }
 
     //Getters and setters
@@ -139,5 +126,13 @@ public class CharacterStatsModel {
 
     public void setMiscDamage(int miscDamage) {
         this.miscDamage = miscDamage;
+    }
+
+    public int getSizeModifier() {
+        return sizeModifier;
+    }
+
+    public void setSizeModifier(int sizeModifier) {
+        this.sizeModifier = sizeModifier;
     }
 }

@@ -3,6 +3,8 @@ package nl.rekijan.geralt.model.buffs;
 import nl.rekijan.geralt.model.AttackModel;
 import nl.rekijan.geralt.model.CharacterStatsModel;
 
+import static nl.rekijan.geralt.AppConstants.BUFF_TYPE_UNTYPED;
+
 /**
  * Logic of PowerAttack
  *
@@ -28,7 +30,7 @@ public class PowerAttack implements BuffInterface {
 
     @Override
     public String getType() {
-        return "untyped";
+        return BUFF_TYPE_UNTYPED;
     }
 
     @Override
@@ -38,5 +40,20 @@ public class PowerAttack implements BuffInterface {
 
     public void setIsActive(boolean active) {
         isActive = active;
+    }
+
+    @Override
+    public boolean grantsExtraAttack() {
+        return false;
+    }
+
+    @Override
+    public int creatureSizeIncrease() {
+        return 0;
+    }
+
+    @Override
+    public int weaponSizeIncrease() {
+        return 0;
     }
 }
