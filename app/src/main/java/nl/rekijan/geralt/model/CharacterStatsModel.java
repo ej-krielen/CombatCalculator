@@ -15,6 +15,7 @@ import nl.rekijan.geralt.utility.MathHelper;
 public class CharacterStatsModel {
 
     private int characterLevel;
+    private int casterLevel;
     private int bab;
     private int strength;
     private int strengthModifier;
@@ -26,8 +27,8 @@ public class CharacterStatsModel {
 
     private ArrayList<AttackModel> attackList = new ArrayList<>();
 
-    public CharacterStatsModel(int characterLevel, int bab, int strength, int dexterity,
-                               int miscToHit, int miscDamage, int sizeModifier) {
+    public CharacterStatsModel(int characterLevel, int casterLevel, int bab, int strength,
+                               int dexterity, int miscToHit, int miscDamage, int sizeModifier) {
         this.characterLevel = characterLevel;
         this.bab = bab;
         this.strength = strength;
@@ -68,6 +69,14 @@ public class CharacterStatsModel {
 
     public void setCharacterLevel(int characterLevel) {
         this.characterLevel = characterLevel;
+    }
+
+    public int getCasterLevel() {
+        return casterLevel;
+    }
+
+    public void setCasterLevel(int casterLevel) {
+        this.casterLevel = casterLevel;
     }
 
     public int getBab() {

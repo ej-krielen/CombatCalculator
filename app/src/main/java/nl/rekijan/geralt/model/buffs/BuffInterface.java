@@ -12,6 +12,7 @@ import nl.rekijan.geralt.model.CharacterStatsModel;
 
 public interface BuffInterface {
     boolean isActive = false;
+    int casterLevel = 0;
 
     int calculateToHit(CharacterStatsModel character, AttackModel attack);
     int calculateDamage(CharacterStatsModel character, AttackModel attack);
@@ -24,4 +25,6 @@ public interface BuffInterface {
 
     int creatureSizeIncrease();
     int weaponSizeIncrease();
+
+    void setCasterLevel(int casterLevel);
 }

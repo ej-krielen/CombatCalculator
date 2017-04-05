@@ -15,6 +15,7 @@ import static nl.rekijan.geralt.AppConstants.BUFF_TYPE_UNTYPED;
 public class PowerAttack implements BuffInterface {
 
     private boolean isActive;
+    private int casterLevel;
 
     public int calculateToHit(CharacterStatsModel character, AttackModel attack) {
         return (int) -(1 + Math.floor(character.getBab() / 4)); //Inverse because the to hit is a penalty
@@ -55,5 +56,10 @@ public class PowerAttack implements BuffInterface {
     @Override
     public int weaponSizeIncrease() {
         return 0;
+    }
+
+    @Override
+    public void setCasterLevel(int casterLevel) {
+        this.casterLevel = casterLevel;
     }
 }

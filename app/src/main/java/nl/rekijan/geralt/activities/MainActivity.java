@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        CharacterStatsModel geralt = new CharacterStatsModel(10, 7, 18, 14, 0, 0, 0);
+        CharacterStatsModel geralt = new CharacterStatsModel(10, 10, 7, 18, 14, 0, 0, 0);
         geralt.addAttack("greatsword", "2d6", 2, true, true, false, false, true, false, "19-20", "x2");
         PowerAttack powerAttack = new PowerAttack();
         powerAttack.setIsActive(true);
