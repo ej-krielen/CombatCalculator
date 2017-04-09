@@ -2,6 +2,10 @@ package nl.rekijan.geralt.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -21,32 +25,47 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        CharacterStatsModel geralt = new CharacterStatsModel(10, 10, 7, 18, 14, 0, 0, 0);
+        final CharacterStatsModel geralt = new CharacterStatsModel(10, 10, 7, 18, 14, 0, 0, 0);
         geralt.addAttack("greatsword", "2d6", 2, true, true, false, false, true, false, "19-20", "x2");
-        PowerAttack powerAttack = new PowerAttack();
-        powerAttack.setIsActive(true);
+        final PowerAttack powerAttack = new PowerAttack();
         buffList.add(powerAttack);
 
-        TextView fullAttackTextView = (TextView) findViewById(R.id.full_attack_textView);
-        fullAttackTextView.setText(MathHelper.getInstance().fullAttackString(this, geralt));
-        TextView characterLevelTextView = (TextView) findViewById(R.id.character_level_textView);
+        final TextView fullAttackTextView = (TextView) findViewById(R.id.full_attack_textView);
+        String fullAttackString = getString(R.string.full_attack_label) + MathHelper.getInstance().fullAttackString(buffList, geralt);
+        fullAttackTextView.setText(fullAttackString);
+        EditText characterLevelTextView = (EditText) findViewById(R.id.character_level_editText);
         characterLevelTextView.setText(String.valueOf(geralt.getCharacterLevel()));
-        TextView babTextView = (TextView) findViewById(R.id.bab_textView);
+        final EditText babTextView = (EditText) findViewById(R.id.bab_textView);
         babTextView.setText(String.valueOf(geralt.getBab()));
-        TextView strengthTextView = (TextView) findViewById(R.id.strength_textView);
+        EditText strengthTextView = (EditText) findViewById(R.id.strength_textView);
         strengthTextView.setText(String.valueOf(geralt.getStrength()));
         TextView strengthModifierTextView = (TextView) findViewById(R.id.strength_modifier_textView);
         strengthModifierTextView.setText(String.valueOf(geralt.getStrengthModifier()));
-        TextView dexterityTextView = (TextView) findViewById(R.id.dexterity_textView);
+        EditText dexterityTextView = (EditText) findViewById(R.id.dexterity_textView);
         dexterityTextView.setText(String.valueOf(geralt.getDexterity()));
         TextView dexterityModifierTextView = (TextView) findViewById(R.id.dexterity_modifier_textView);
         dexterityModifierTextView.setText(String.valueOf(geralt.getDexterityModifier()));
-        TextView weaponEnchantTextView = (TextView) findViewById(R.id.weapon_enchant_textView);
+        EditText weaponEnchantTextView = (EditText) findViewById(R.id.weapon_enchant_textView);
         weaponEnchantTextView.setText(String.valueOf(geralt.getAttacks().get(0).getWeaponEchant()));
-        TextView miscToHitTextView = (TextView) findViewById(R.id.misc_to_hit_textView);
+        EditText miscToHitTextView = (EditText) findViewById(R.id.misc_to_hit_textView);
         miscToHitTextView.setText(String.valueOf(geralt.getMiscToHit()));
-        TextView miscDamageTextView = (TextView) findViewById(R.id.misc_damage_textView);
+        EditText miscDamageTextView = (EditText) findViewById(R.id.misc_damage_textView);
         miscDamageTextView.setText(String.valueOf(geralt.getMiscDamage()));
+
+        final CheckBox powerAttackCheckBox = (CheckBox) findViewById(R.id.power_attack_checkBox);
+
+        Button calculateButton = (Button) findViewById(R.id.calculate_button);
+        calculateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (Integer.valueOf(babTextView.getText().toString()) != geralt.getBab()) {
+                    geralt.setBab(Integer.valueOf(babTextView.getText().toString()));
+                }
+                powerAttack.setIsActive(powerAttackCheckBox.isChecked());
+                String fullAttackString = getString(R.string.full_attack_label) + MathHelper.getInstance().fullAttackString(buffList, geralt);
+                fullAttackTextView.setText(fullAttackString);
+            }
+        });
     }
 
     public ArrayList<BuffInterface> getBuffList() {

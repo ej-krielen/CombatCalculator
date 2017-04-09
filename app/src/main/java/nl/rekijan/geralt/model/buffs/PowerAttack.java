@@ -30,6 +30,11 @@ public class PowerAttack implements BuffInterface {
     }
 
     @Override
+    public String getName() {
+        return "Power Attack";
+    }
+
+    @Override
     public String getType() {
         return BUFF_TYPE_UNTYPED;
     }
@@ -56,6 +61,10 @@ public class PowerAttack implements BuffInterface {
     @Override
     public int weaponSizeIncrease() {
         return 0;
+    }
+
+    public int getCasterLevel() {
+        return casterLevel;
     }
 
     @Override

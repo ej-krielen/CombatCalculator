@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.rekijan.geralt.activities.MainActivity;
 import nl.rekijan.geralt.model.AttackModel;
 import nl.rekijan.geralt.model.CharacterStatsModel;
 import nl.rekijan.geralt.model.buffs.BuffInterface;
@@ -56,7 +55,7 @@ public class MathHelper {
         }
     }
 
-    public String fullAttackString(MainActivity mainActivity, CharacterStatsModel character) {
+    public String fullAttackString(ArrayList<BuffInterface> buffList, CharacterStatsModel character) {
 
         ArrayList<AttackModel> attacks = character.getAttacks();
         //TODO use all attacks
@@ -100,7 +99,7 @@ public class MathHelper {
         int increasesCreatureSize = 0;
         int increaseWeaponSize = 0;
 
-        for (BuffInterface buff : mainActivity.getBuffList()) {
+        for (BuffInterface buff : buffList) {
             if (buff.isActive()) {
 
                 if (buff.grantsExtraAttack()) extraAttack = true;

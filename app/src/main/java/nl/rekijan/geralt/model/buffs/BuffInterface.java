@@ -17,6 +17,7 @@ public interface BuffInterface {
     int calculateToHit(CharacterStatsModel character, AttackModel attack);
     int calculateDamage(CharacterStatsModel character, AttackModel attack);
 
+    String getName();
     String getType();
     boolean isActive();
     void setIsActive(boolean isActive);
@@ -26,5 +27,6 @@ public interface BuffInterface {
     int creatureSizeIncrease();
     int weaponSizeIncrease();
 
+    int getCasterLevel();
     void setCasterLevel(int casterLevel);
 }
