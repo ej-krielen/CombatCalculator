@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Geralt</string>
+    <string name="app_name">Combat Calculator</string>
 
     <!--Label-->
     <string name="full_attack_label">Full attack:\u0020</string>
@@ -12,8 +12,21 @@
     <string name="weapon_enchant_label">Weapon enchant:\u0020</string>
     <string name="misc_to_hit_label">Misc to hit:\u0020</string>
     <string name="misc_damage_label">Misc damage:\u0020</string>
+    <string name="power_attack_label">Power Attack:</string>
+
+    <!--Dialog-->
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="character_level_dialog_title">Enter your character level</string>
+    <string name="bab_dialog_title">Enter your base attack bonus</string>
+    <string name="strength_dialog_title">Enter your strength score</string>
+    <string name="dexterity_dialog_title">Enter your dexterity score</string>
+    <string name="weapon_enchant_dialog_title">Enter the enchantment bonus of your weapon</string>
+    <string name="misc_to_hit_dialog_title">Enter any other to hit modifier</string>
+    <string name="misc_damage_dialog_title">Enter any other damage modifier</string>
 
     <!--Error-->
     <string name="error_stat_not_found">Stat not found</string>
+    <string name="error_no_such_value">The following value was not found:\u0020</string>
 
 </resources>

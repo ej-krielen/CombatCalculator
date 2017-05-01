@@ -4,101 +4,59 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="nl.rekijan.geralt.activities.MainActivity"
+    tools:context="nl.rekijan.combatcalculator.activities.MainActivity"
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="81dp">
 
     <TextView
         android:id="@+id/full_attack_textView"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
         android:gravity="center"
+        android:padding="8dp"
         android:text="@string/error_stat_not_found"
+        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_default="wrap" />
 
     <TextView
-        android:id="@+id/character_level_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:layout_marginRight="4dp"
-        android:text="@string/character_level_label"
-        app:layout_constraintBottom_toBottomOf="@+id/character_level_editText"
-        app:layout_constraintRight_toLeftOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toTopOf="@+id/character_level_editText" />
-
-    <EditText
         android:id="@+id/character_level_editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
         android:layout_marginStart="4dp"
-        android:inputType="number"
-        android:text="@string/error_stat_not_found"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline_vertical"
+        android:padding="8dp"
+        android:text="@string/character_level_label"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/full_attack_textView" />
 
     <TextView
-        android:id="@+id/bab_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:layout_marginRight="4dp"
-        android:text="@string/bab_label"
-        app:layout_constraintBottom_toBottomOf="@+id/bab_textView"
-        app:layout_constraintRight_toLeftOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toTopOf="@+id/bab_textView" />
-
-    <EditText
         android:id="@+id/bab_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginStart="4dp"
-        android:inputType="number"
-        android:text="@string/error_stat_not_found"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline_vertical"
+        android:padding="8dp"
+        android:text="@string/bab_label"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/character_level_editText" />
 
     <TextView
-        android:id="@+id/strength_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:layout_marginRight="4dp"
-        android:text="@string/strength_label"
-        app:layout_constraintBottom_toBottomOf="@+id/strength_textView"
-        app:layout_constraintRight_toLeftOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toTopOf="@+id/strength_textView" />
-
-    <EditText
         android:id="@+id/strength_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
         android:layout_marginStart="4dp"
-        android:inputType="number"
-        android:text="@string/error_stat_not_found"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline_vertical"
+        android:paddingBottom="0dp"
+        android:paddingTop="8dp"
+        android:text="@string/strength_label"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bab_textView" />
-
-    <TextView
-        android:id="@+id/strength_modifier_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:layout_marginRight="4dp"
-        android:text="@string/strength_modifier_label"
-        app:layout_constraintBottom_toBottomOf="@+id/strength_modifier_textView"
-        app:layout_constraintRight_toLeftOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toTopOf="@+id/strength_modifier_textView" />
 
     <TextView
         android:id="@+id/strength_modifier_textView"
@@ -106,42 +64,25 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
         android:layout_marginStart="4dp"
-        android:text="@string/error_stat_not_found"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline_vertical"
+        android:paddingBottom="8dp"
+        android:text="@string/strength_modifier_label"
+        android:textStyle="italic"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/strength_textView" />
 
     <TextView
-        android:id="@+id/dexterity_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:layout_marginRight="4dp"
-        android:text="@string/dexterity_label"
-        app:layout_constraintBottom_toBottomOf="@+id/dexterity_textView"
-        app:layout_constraintRight_toLeftOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toTopOf="@+id/dexterity_textView" />
-
-    <EditText
         android:id="@+id/dexterity_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
         android:layout_marginStart="4dp"
-        android:inputType="number"
-        android:text="@string/error_stat_not_found"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline_vertical"
+        android:paddingBottom="0dp"
+        android:paddingTop="8dp"
+        android:text="@string/dexterity_label"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/strength_modifier_textView" />
-
-    <TextView
-        android:id="@+id/dexterity_modifier_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:layout_marginRight="4dp"
-        android:text="@string/dexterity_modifier_label"
-        app:layout_constraintBottom_toBottomOf="@+id/dexterity_modifier_textView"
-        app:layout_constraintRight_toLeftOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toTopOf="@+id/dexterity_modifier_textView" />
 
     <TextView
         android:id="@+id/dexterity_modifier_textView"
@@ -149,117 +90,69 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
         android:layout_marginStart="4dp"
-        android:text="@string/error_stat_not_found"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline_vertical"
+        android:paddingBottom="8dp"
+        android:text="@string/dexterity_modifier_label"
+        android:textStyle="italic"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dexterity_textView" />
 
     <TextView
-        android:id="@+id/weapon_enchant_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:layout_marginRight="4dp"
-        android:text="@string/weapon_enchant_label"
-        app:layout_constraintBottom_toBottomOf="@+id/weapon_enchant_textView"
-        app:layout_constraintRight_toLeftOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toTopOf="@+id/weapon_enchant_textView" />
-
-    <EditText
         android:id="@+id/weapon_enchant_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
         android:layout_marginStart="4dp"
-        android:inputType="number"
-        android:text="@string/error_stat_not_found"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline_vertical"
+        android:padding="8dp"
+        android:text="@string/weapon_enchant_label"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dexterity_modifier_textView" />
 
     <TextView
-        android:id="@+id/misc_to_hit_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:layout_marginRight="4dp"
-        android:text="@string/misc_to_hit_label"
-        app:layout_constraintBottom_toBottomOf="@+id/misc_to_hit_textView"
-        app:layout_constraintRight_toLeftOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toTopOf="@+id/misc_to_hit_textView" />
-
-    <EditText
         android:id="@+id/misc_to_hit_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
         android:layout_marginStart="4dp"
-        android:inputType="number"
-        android:text="@string/error_stat_not_found"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline_vertical"
+        android:padding="8dp"
+        android:text="@string/misc_to_hit_label"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/weapon_enchant_textView" />
 
     <TextView
-        android:id="@+id/misc_damage_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:layout_marginRight="4dp"
-        android:text="@string/misc_damage_label"
-        app:layout_constraintBottom_toBottomOf="@+id/misc_damage_textView"
-        app:layout_constraintRight_toLeftOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toTopOf="@+id/misc_damage_textView" />
-
-    <EditText
         android:id="@+id/misc_damage_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
         android:layout_marginStart="4dp"
-        android:inputType="number"
-        android:text="@string/error_stat_not_found"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline_vertical"
+        android:padding="8dp"
+        android:text="@string/misc_damage_label"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/misc_to_hit_textView" />
 
-    <TextView
-        android:id="@+id/power_attack_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginTop="8dp"
-        android:text="Power Attack"
-        app:layout_constraintBottom_toBottomOf="@+id/power_attack_checkBox"
-        app:layout_constraintRight_toLeftOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toTopOf="@+id/power_attack_checkBox" />
-
-    <CheckBox
+    <CheckedTextView
         android:id="@+id/power_attack_checkBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
         android:layout_marginStart="4dp"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toBottomOf="@+id/misc_damage_textView" />
-
-    <Button
-        android:id="@+id/calculate_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:text="Calculate"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+        android:padding="8dp"
+        android:text="@string/power_attack_label"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/misc_damage_textView" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline_vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
+        app:layout_constraintGuide_percent="0.5"
+        tools:layout_editor_absoluteX="192dp"
+        tools:layout_editor_absoluteY="0dp" />
 
 </android.support.constraint.ConstraintLayout>

@@ -1,27 +1,27 @@
-package nl.rekijan.geralt.utility;
+package nl.rekijan.combatcalculator.utility;
 
 import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.rekijan.geralt.model.AttackModel;
-import nl.rekijan.geralt.model.CharacterStatsModel;
-import nl.rekijan.geralt.model.buffs.BuffInterface;
+import nl.rekijan.combatcalculator.model.AttackModel;
+import nl.rekijan.combatcalculator.model.CharacterStatsModel;
+import nl.rekijan.combatcalculator.model.buffs.BuffInterface;
 
 import static java.util.Arrays.asList;
-import static nl.rekijan.geralt.AppConstants.BUFF_TYPE_ALCHEMICAL;
-import static nl.rekijan.geralt.AppConstants.BUFF_TYPE_CIRCUMSTANCE;
-import static nl.rekijan.geralt.AppConstants.BUFF_TYPE_COMPETENCE;
-import static nl.rekijan.geralt.AppConstants.BUFF_TYPE_ENHANCEMENT;
-import static nl.rekijan.geralt.AppConstants.BUFF_TYPE_INHERENT;
-import static nl.rekijan.geralt.AppConstants.BUFF_TYPE_INSIGHT;
-import static nl.rekijan.geralt.AppConstants.BUFF_TYPE_LUCK;
-import static nl.rekijan.geralt.AppConstants.BUFF_TYPE_MORALE;
-import static nl.rekijan.geralt.AppConstants.BUFF_TYPE_PROFANE;
-import static nl.rekijan.geralt.AppConstants.BUFF_TYPE_RACIAL;
-import static nl.rekijan.geralt.AppConstants.BUFF_TYPE_SACRED;
-import static nl.rekijan.geralt.AppConstants.BUFF_TYPE_TRAIT;
+import static nl.rekijan.combatcalculator.AppConstants.BUFF_TYPE_ALCHEMICAL;
+import static nl.rekijan.combatcalculator.AppConstants.BUFF_TYPE_CIRCUMSTANCE;
+import static nl.rekijan.combatcalculator.AppConstants.BUFF_TYPE_COMPETENCE;
+import static nl.rekijan.combatcalculator.AppConstants.BUFF_TYPE_ENHANCEMENT;
+import static nl.rekijan.combatcalculator.AppConstants.BUFF_TYPE_INHERENT;
+import static nl.rekijan.combatcalculator.AppConstants.BUFF_TYPE_INSIGHT;
+import static nl.rekijan.combatcalculator.AppConstants.BUFF_TYPE_LUCK;
+import static nl.rekijan.combatcalculator.AppConstants.BUFF_TYPE_MORALE;
+import static nl.rekijan.combatcalculator.AppConstants.BUFF_TYPE_PROFANE;
+import static nl.rekijan.combatcalculator.AppConstants.BUFF_TYPE_RACIAL;
+import static nl.rekijan.combatcalculator.AppConstants.BUFF_TYPE_SACRED;
+import static nl.rekijan.combatcalculator.AppConstants.BUFF_TYPE_TRAIT;
 
 /**
  * Utility class for calculations
@@ -55,10 +55,16 @@ public class MathHelper {
         }
     }
 
+    /**
+     *
+     * @param buffList all buffs
+     * @param character model of the character and its stats
+     * @return String of the selected attack on the character with all its stats and buffs taken into account.
+     */
     public String fullAttackString(ArrayList<BuffInterface> buffList, CharacterStatsModel character) {
 
         ArrayList<AttackModel> attacks = character.getAttacks();
-        //TODO use all attacks
+        //TODO use selected attack
         AttackModel primaryAttack = attacks.get(0);
         if (primaryAttack == null) return "No attacks defined";
 

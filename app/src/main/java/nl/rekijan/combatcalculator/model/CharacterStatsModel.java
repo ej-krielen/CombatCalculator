@@ -1,9 +1,9 @@
-package nl.rekijan.geralt.model;
+package nl.rekijan.combatcalculator.model;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import nl.rekijan.geralt.utility.MathHelper;
+import nl.rekijan.combatcalculator.utility.MathHelper;
 
 /**
  * Stores data for the characters

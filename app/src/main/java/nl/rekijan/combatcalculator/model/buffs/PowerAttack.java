@@ -1,9 +1,9 @@
-package nl.rekijan.geralt.model.buffs;
+package nl.rekijan.combatcalculator.model.buffs;
 
-import nl.rekijan.geralt.model.AttackModel;
-import nl.rekijan.geralt.model.CharacterStatsModel;
+import nl.rekijan.combatcalculator.model.AttackModel;
+import nl.rekijan.combatcalculator.model.CharacterStatsModel;
 
-import static nl.rekijan.geralt.AppConstants.BUFF_TYPE_UNTYPED;
+import static nl.rekijan.combatcalculator.AppConstants.BUFF_TYPE_UNTYPED;
 
 /**
  * Logic of PowerAttack

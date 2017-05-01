@@ -1,4 +1,4 @@
-package nl.rekijan.geralt.model;
+package nl.rekijan.combatcalculator.model;
 
 /**
  * Model for all (weapon and natural) attacks
