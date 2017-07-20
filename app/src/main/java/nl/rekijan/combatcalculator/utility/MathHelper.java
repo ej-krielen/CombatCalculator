@@ -117,6 +117,8 @@ public class MathHelper {
                     isGreaterBaneActive = ((Bane)buff).isGreaterBaneActive();
                 }
 
+                buff.setCasterLevel(character.getCasterLevel());
+
                 int buffCreatureSize = buff.creatureSizeIncrease();
                 int buffWeaponSize = buff.weaponSizeIncrease();
                 increasesCreatureSize = buffCreatureSize > increasesCreatureSize ? buffCreatureSize : increasesCreatureSize;

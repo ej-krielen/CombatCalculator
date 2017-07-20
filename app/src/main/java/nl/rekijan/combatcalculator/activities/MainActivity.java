@@ -14,6 +14,7 @@ import nl.rekijan.combatcalculator.R;
 import nl.rekijan.combatcalculator.model.CharacterStatsModel;
 import nl.rekijan.combatcalculator.model.buffs.Bane;
 import nl.rekijan.combatcalculator.model.buffs.BuffInterface;
+import nl.rekijan.combatcalculator.model.buffs.DivineFavor;
 import nl.rekijan.combatcalculator.model.buffs.Flanking;
 import nl.rekijan.combatcalculator.model.buffs.PowerAttack;
 import nl.rekijan.combatcalculator.utility.MathHelper;
@@ -58,6 +59,8 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
         buffList.add(flanking);
         final Bane bane = new Bane();
         buffList.add(bane);
+        final DivineFavor divineFavor = new DivineFavor();
+        buffList.add(divineFavor);
 
         //Set all text views on startup
         fullAttackTextView = (TextView) findViewById(R.id.full_attack_textView);
@@ -89,21 +92,6 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
         weaponEnchantTextView.setOnClickListener(this);
         miscToHitTextView.setOnClickListener(this);
         miscDamageTextView.setOnClickListener(this);
-
-        //Set check box and its listener
-        final CheckedTextView powerAttackCheckBox = (CheckedTextView) findViewById(R.id.power_attack_checkBox);
-        powerAttackCheckBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (powerAttackCheckBox.isChecked()) {
-                    powerAttackCheckBox.setChecked(false);
-                } else {
-                    powerAttackCheckBox.setChecked(true);
-                }
-                powerAttack.setIsActive(powerAttackCheckBox.isChecked());
-                calculate(character, fullAttackTextView);
-            }
-        });
 
         //Set check box and its listener
         final CheckedTextView flankingCheckBox = (CheckedTextView) findViewById(R.id.flanking_checkBox);
@@ -165,6 +153,51 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
             }
         });
 
+        //Set check box and its listener
+        final CheckedTextView powerAttackCheckBox = (CheckedTextView) findViewById(R.id.power_attack_checkBox);
+        powerAttackCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (powerAttackCheckBox.isChecked()) {
+                    powerAttackCheckBox.setChecked(false);
+                } else {
+                    powerAttackCheckBox.setChecked(true);
+                }
+                powerAttack.setIsActive(powerAttackCheckBox.isChecked());
+                calculate(character, fullAttackTextView);
+            }
+        });
+
+        //Set check box and its listener
+        final CheckedTextView divineFavorCheckBox = (CheckedTextView) findViewById(R.id.divine_favor_checkBox);
+        divineFavorCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (divineFavorCheckBox.isChecked()) {
+                    divineFavorCheckBox.setChecked(false);
+                } else {
+                    divineFavorCheckBox.setChecked(true);
+                }
+                divineFavor.setIsActive(divineFavorCheckBox.isChecked());
+                calculate(character, fullAttackTextView);
+            }
+        });
+
+        //Set check box and its listener
+        final CheckedTextView fatesFavoredCheckBox = (CheckedTextView) findViewById(R.id.fates_favored_checkBox);
+        fatesFavoredCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (fatesFavoredCheckBox.isChecked()) {
+                    fatesFavoredCheckBox.setChecked(false);
+                } else {
+                    fatesFavoredCheckBox.setChecked(true);
+                }
+                divineFavor.setIsFatesFavored(fatesFavoredCheckBox.isChecked());
+                calculate(character, fullAttackTextView);
+            }
+        });
+
     }
 
     /**
@@ -198,6 +231,7 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
             case DIALOG_CHARACTER_LEVEL:
                 character.setCharacterLevel(value);
                 characterLevelTextView.setText(String.format("%s%s", getString(R.string.character_level_label), value));
+                character.setCasterLevel(value); //TODO remove later
                 break;
             case DIALOG_BAB:
                 character.setBab(value);

@@ -30,6 +30,7 @@ public class CharacterStatsModel {
     public CharacterStatsModel(int characterLevel, int casterLevel, int bab, int strength,
                                int dexterity, int miscToHit, int miscDamage, int sizeModifier) {
         this.characterLevel = characterLevel;
+        this.casterLevel = casterLevel;
         this.bab = bab;
         this.strength = strength;
         this.strengthModifier = MathHelper.getInstance().abilityModifier(strength);
