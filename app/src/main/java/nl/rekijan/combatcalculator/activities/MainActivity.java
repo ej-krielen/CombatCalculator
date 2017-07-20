@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import nl.rekijan.combatcalculator.R;
 import nl.rekijan.combatcalculator.model.CharacterStatsModel;
 import nl.rekijan.combatcalculator.model.buffs.BuffInterface;
+import nl.rekijan.combatcalculator.model.buffs.Flanking;
 import nl.rekijan.combatcalculator.model.buffs.PowerAttack;
 import nl.rekijan.combatcalculator.utility.MathHelper;
 import nl.rekijan.combatcalculator.utility.dialogs.NumberPickerDialogFragment;
@@ -52,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
         character.addAttack("greatsword", "2d6", 2, true, true, false, false, true, false, "19-20", "x2"); //TODO replace with actual attack creator
         final PowerAttack powerAttack = new PowerAttack();
         buffList.add(powerAttack);
+        final Flanking flanking = new Flanking();
+        buffList.add(flanking);
 
         //Set all text views on startup
         fullAttackTextView = (TextView) findViewById(R.id.full_attack_textView);
@@ -98,6 +101,37 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
                 calculate(character, fullAttackTextView);
             }
         });
+
+        //Set check box and its listener
+        final CheckedTextView flankingCheckBox = (CheckedTextView) findViewById(R.id.flanking_checkBox);
+        flankingCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (flankingCheckBox.isChecked()) {
+                    flankingCheckBox.setChecked(false);
+                } else {
+                    flankingCheckBox.setChecked(true);
+                }
+                flanking.setIsActive(flankingCheckBox.isChecked());
+                calculate(character, fullAttackTextView);
+            }
+        });
+
+        //Set check box and its listener
+        final CheckedTextView outflankCheckBox = (CheckedTextView) findViewById(R.id.outflank_checkBox);
+        outflankCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (outflankCheckBox.isChecked()) {
+                    outflankCheckBox.setChecked(false);
+                } else {
+                    outflankCheckBox.setChecked(true);
+                }
+                flanking.setIsOutflanActive(outflankCheckBox.isChecked());
+                calculate(character, fullAttackTextView);
+            }
+        });
+
     }
 
     /**
