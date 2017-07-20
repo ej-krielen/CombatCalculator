@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import nl.rekijan.combatcalculator.R;
 import nl.rekijan.combatcalculator.model.CharacterStatsModel;
+import nl.rekijan.combatcalculator.model.buffs.Bane;
 import nl.rekijan.combatcalculator.model.buffs.BuffInterface;
 import nl.rekijan.combatcalculator.model.buffs.Flanking;
 import nl.rekijan.combatcalculator.model.buffs.PowerAttack;
@@ -55,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
         buffList.add(powerAttack);
         final Flanking flanking = new Flanking();
         buffList.add(flanking);
+        final Bane bane = new Bane();
+        buffList.add(bane);
 
         //Set all text views on startup
         fullAttackTextView = (TextView) findViewById(R.id.full_attack_textView);
@@ -128,6 +131,36 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
                     outflankCheckBox.setChecked(true);
                 }
                 flanking.setIsOutflanActive(outflankCheckBox.isChecked());
+                calculate(character, fullAttackTextView);
+            }
+        });
+
+        //Set check box and its listener
+        final CheckedTextView baneCheckBox = (CheckedTextView) findViewById(R.id.bane_checkBox);
+        baneCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (baneCheckBox.isChecked()) {
+                    baneCheckBox.setChecked(false);
+                } else {
+                    baneCheckBox.setChecked(true);
+                }
+                bane.setIsActive(baneCheckBox.isChecked());
+                calculate(character, fullAttackTextView);
+            }
+        });
+
+        //Set check box and its listener
+        final CheckedTextView greaterBaneCheckBox = (CheckedTextView) findViewById(R.id.greater_bane_checkBox);
+        greaterBaneCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (greaterBaneCheckBox.isChecked()) {
+                    greaterBaneCheckBox.setChecked(false);
+                } else {
+                    greaterBaneCheckBox.setChecked(true);
+                }
+                bane.setIsGreaterBaneActive(greaterBaneCheckBox.isChecked());
                 calculate(character, fullAttackTextView);
             }
         });

@@ -7,6 +7,7 @@ import java.util.List;
 
 import nl.rekijan.combatcalculator.model.AttackModel;
 import nl.rekijan.combatcalculator.model.CharacterStatsModel;
+import nl.rekijan.combatcalculator.model.buffs.Bane;
 import nl.rekijan.combatcalculator.model.buffs.BuffInterface;
 
 import static java.util.Arrays.asList;
@@ -102,6 +103,8 @@ public class MathHelper {
         int untypedDamage = 0;
 
         boolean extraAttack = false;
+        boolean isBaneActive = false;
+        boolean isGreaterBaneActive = false;
         int increasesCreatureSize = 0;
         int increaseWeaponSize = 0;
 
@@ -109,6 +112,11 @@ public class MathHelper {
             if (buff.isActive()) {
 
                 if (buff.grantsExtraAttack()) extraAttack = true;
+                if (buff.getName().equals("Bane")) {
+                    isBaneActive = true;
+                    isGreaterBaneActive = ((Bane)buff).isGreaterBaneActive();
+                }
+
                 int buffCreatureSize = buff.creatureSizeIncrease();
                 int buffWeaponSize = buff.weaponSizeIncrease();
                 increasesCreatureSize = buffCreatureSize > increasesCreatureSize ? buffCreatureSize : increasesCreatureSize;
@@ -228,9 +236,11 @@ public class MathHelper {
         }
 
         String weaponDiceString = getWeaponDamageDiceString((increasesCreatureSize + increaseWeaponSize), primaryAttack.getWeaponDice());
+        String baneDiceString = isGreaterBaneActive ? "4d6" : "2d6";
+        String baneString = isBaneActive ? "+" + baneDiceString : "";
 
-        return String.format("%s +%s (%s+%s %s%s%s)",
-                primaryAttack.getName(), attackRoutine, weaponDiceString, damage,
+        return String.format("%s +%s (%s%s+%s %s%s%s)",
+                primaryAttack.getName(), attackRoutine, weaponDiceString, baneString, damage,
                 primaryAttack.getCritRange(),
                 (TextUtils.isEmpty(primaryAttack.getCritRange()) ? "" : "/" ),
                 primaryAttack.getCritMultiplier());

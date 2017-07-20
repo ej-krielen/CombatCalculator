@@ -15,6 +15,8 @@
     <string name="power_attack_label">Power Attack:</string>
     <string name="flanking_label">Flanking:</string>
     <string name="outflank_label">Outflank:</string>
+    <string name="bane_label">Bane:</string>
+    <string name="greater_bane_label">Greater Bane:</string>
 
     <!--Dialog-->
     <string name="dialog_ok">OK</string>
