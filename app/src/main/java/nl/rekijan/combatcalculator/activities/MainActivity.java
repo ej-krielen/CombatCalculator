@@ -15,6 +15,7 @@ import nl.rekijan.combatcalculator.model.CharacterStatsModel;
 import nl.rekijan.combatcalculator.model.buffs.Bane;
 import nl.rekijan.combatcalculator.model.buffs.BuffInterface;
 import nl.rekijan.combatcalculator.model.buffs.DivineFavor;
+import nl.rekijan.combatcalculator.model.buffs.DivinePower;
 import nl.rekijan.combatcalculator.model.buffs.Flanking;
 import nl.rekijan.combatcalculator.model.buffs.PowerAttack;
 import nl.rekijan.combatcalculator.model.buffs.Prayer;
@@ -64,6 +65,8 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
         buffList.add(divineFavor);
         final Prayer prayer = new Prayer();
         buffList.add(prayer);
+        final DivinePower divinePower = new DivinePower();
+        buffList.add(divinePower);
 
         //Set all text views on startup
         fullAttackTextView = (TextView) findViewById(R.id.full_attack_textView);
@@ -198,6 +201,7 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
                 }
                 divineFavor.setIsFatesFavored(fatesFavoredCheckBox.isChecked());
                 prayer.setIsFatesFavored(fatesFavoredCheckBox.isChecked());
+                divinePower.setIsFatesFavored(fatesFavoredCheckBox.isChecked());
                 calculate(character, fullAttackTextView);
             }
         });
@@ -213,6 +217,21 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
                     prayerCheckBox.setChecked(true);
                 }
                 prayer.setIsActive(prayerCheckBox.isChecked());
+                calculate(character, fullAttackTextView);
+            }
+        });
+
+        //Set check box and its listener
+        final CheckedTextView divinePowerCheckBox = (CheckedTextView) findViewById(R.id.divine_power_checkBox);
+        divinePowerCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (divinePowerCheckBox.isChecked()) {
+                    divinePowerCheckBox.setChecked(false);
+                } else {
+                    divinePowerCheckBox.setChecked(true);
+                }
+                divinePower.setIsActive(divinePowerCheckBox.isChecked());
                 calculate(character, fullAttackTextView);
             }
         });
