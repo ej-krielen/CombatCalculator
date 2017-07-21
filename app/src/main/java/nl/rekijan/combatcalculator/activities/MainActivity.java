@@ -17,6 +17,7 @@ import nl.rekijan.combatcalculator.model.buffs.BuffInterface;
 import nl.rekijan.combatcalculator.model.buffs.DivineFavor;
 import nl.rekijan.combatcalculator.model.buffs.Flanking;
 import nl.rekijan.combatcalculator.model.buffs.PowerAttack;
+import nl.rekijan.combatcalculator.model.buffs.Prayer;
 import nl.rekijan.combatcalculator.utility.MathHelper;
 import nl.rekijan.combatcalculator.utility.dialogs.NumberPickerDialogFragment;
 
@@ -61,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
         buffList.add(bane);
         final DivineFavor divineFavor = new DivineFavor();
         buffList.add(divineFavor);
+        final Prayer prayer = new Prayer();
+        buffList.add(prayer);
 
         //Set all text views on startup
         fullAttackTextView = (TextView) findViewById(R.id.full_attack_textView);
@@ -194,6 +197,22 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
                     fatesFavoredCheckBox.setChecked(true);
                 }
                 divineFavor.setIsFatesFavored(fatesFavoredCheckBox.isChecked());
+                prayer.setIsFatesFavored(fatesFavoredCheckBox.isChecked());
+                calculate(character, fullAttackTextView);
+            }
+        });
+
+        //Set check box and its listener
+        final CheckedTextView prayerCheckBox = (CheckedTextView) findViewById(R.id.prayer_checkBox);
+        prayerCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (prayerCheckBox.isChecked()) {
+                    prayerCheckBox.setChecked(false);
+                } else {
+                    prayerCheckBox.setChecked(true);
+                }
+                prayer.setIsActive(prayerCheckBox.isChecked());
                 calculate(character, fullAttackTextView);
             }
         });

@@ -19,6 +19,7 @@
     <string name="greater_bane_label">Greater Bane:</string>
     <string name="divine_favor_label">Divine Favor:</string>
     <string name="fates_favored_label">Fates Favored</string>
+    <string name="prayer_label">Prayer:</string>
 
     <!--Dialog-->
     <string name="dialog_ok">OK</string>
