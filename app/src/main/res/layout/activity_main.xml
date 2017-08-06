@@ -4,253 +4,265 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="nl.rekijan.combatcalculator.activities.MainActivity"
-    tools:layout_editor_absoluteX="0dp"
-    tools:layout_editor_absoluteY="81dp">
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline_vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteX="192dp"
-        tools:layout_editor_absoluteY="0dp"
-        app:layout_constraintGuide_percent="0.5" />
+    tools:context="nl.rekijan.combatcalculator.activities.MainActivity">
 
     <TextView
         android:id="@+id/full_attack_textView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="4dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
+        android:layout_marginStart="4dp"
         android:gravity="center"
         android:padding="8dp"
+        android:minLines="2"
         android:text="@string/error_stat_not_found"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_weight="1"
         app:layout_constraintWidth_default="wrap" />
 
-    <TextView
-        android:id="@+id/misc_to_hit_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginStart="4dp"
-        android:padding="8dp"
-        android:text="@string/misc_to_hit_label"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/full_attack_textView" />
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/full_attack_textView">
 
-    <TextView
-        android:id="@+id/misc_damage_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginStart="4dp"
-        android:padding="8dp"
-        android:text="@string/misc_damage_label"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/misc_to_hit_textView" />
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <CheckedTextView
-        android:id="@+id/flanking_checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="4dp"
-        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-        android:padding="8dp"
-        android:text="@string/flanking_label"
-        app:layout_constraintRight_toRightOf="@id/guideline_vertical"
-        app:layout_constraintTop_toBottomOf="@+id/misc_damage_textView"/>
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5"
+                tools:layout_editor_absoluteX="71dp"
+                tools:layout_editor_absoluteY="114dp" />
 
-    <CheckedTextView
-        android:id="@+id/outflank_checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginStart="4dp"
-        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-        android:padding="8dp"
-        android:text="@string/outflank_label"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toBottomOf="@+id/misc_damage_textView" />
+            <TextView
+                android:id="@+id/misc_to_hit_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
+                android:padding="8dp"
+                android:text="@string/misc_to_hit_label"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <CheckedTextView
-        android:id="@+id/bane_checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginStart="4dp"
-        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-        android:padding="8dp"
-        android:text="@string/bane_label"
-        app:layout_constraintRight_toRightOf="@id/guideline_vertical"
-        app:layout_constraintTop_toBottomOf="@+id/flanking_checkBox" />
+            <TextView
+                android:id="@+id/misc_damage_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
+                android:padding="8dp"
+                android:text="@string/misc_damage_label"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/misc_to_hit_textView" />
 
-    <CheckedTextView
-        android:id="@+id/greater_bane_checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginStart="4dp"
-        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-        android:padding="8dp"
-        android:text="@string/greater_bane_label"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toBottomOf="@+id/flanking_checkBox" />
+            <CheckedTextView
+                android:id="@+id/flanking_checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+                android:padding="8dp"
+                android:text="@string/flanking_label"
+                app:layout_constraintRight_toLeftOf="@+id/guideline_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/misc_damage_textView" />
 
-    <CheckedTextView
-        android:id="@+id/power_attack_checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginStart="4dp"
-        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-        android:padding="8dp"
-        android:text="@string/power_attack_label"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bane_checkBox" />
+            <CheckedTextView
+                android:id="@+id/outflank_checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
+                android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+                android:padding="8dp"
+                android:text="@string/outflank_label"
+                app:layout_constraintLeft_toLeftOf="@+id/guideline_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/misc_damage_textView" />
 
-    <CheckedTextView
-        android:id="@+id/divine_favor_checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginStart="4dp"
-        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-        android:padding="8dp"
-        android:text="@string/divine_favor_label"
-        app:layout_constraintRight_toRightOf="@id/guideline_vertical"
-        app:layout_constraintTop_toBottomOf="@+id/power_attack_checkBox" />
+            <CheckedTextView
+                android:id="@+id/bane_checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+                android:padding="8dp"
+                android:text="@string/bane_label"
+                app:layout_constraintRight_toLeftOf="@+id/guideline_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/flanking_checkBox" />
 
-    <CheckedTextView
-        android:id="@+id/fates_favored_checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginStart="4dp"
-        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-        android:padding="8dp"
-        android:text="@string/fates_favored_label"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toBottomOf="@+id/power_attack_checkBox" />
+            <CheckedTextView
+                android:id="@+id/greater_bane_checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
+                android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+                android:padding="8dp"
+                android:text="@string/greater_bane_label"
+                app:layout_constraintLeft_toLeftOf="@+id/guideline_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/flanking_checkBox" />
 
-    <CheckedTextView
-        android:id="@+id/prayer_checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginStart="4dp"
-        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-        android:padding="8dp"
-        android:text="@string/prayer_label"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divine_favor_checkBox" />
+            <CheckedTextView
+                android:id="@+id/power_attack_checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
+                android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+                android:padding="8dp"
+                android:text="@string/power_attack_label"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bane_checkBox" />
 
-    <CheckedTextView
-        android:id="@+id/divine_power_checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginStart="4dp"
-        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-        android:padding="8dp"
-        android:text="@string/divine_power_label"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prayer_checkBox" />
+            <CheckedTextView
+                android:id="@+id/divine_favor_checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+                android:padding="8dp"
+                android:text="@string/divine_favor_label"
+                app:layout_constraintRight_toLeftOf="@+id/guideline_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/power_attack_checkBox" />
 
-    <TextView
-        android:id="@+id/character_level_editText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginStart="4dp"
-        android:padding="8dp"
-        android:text="@string/character_level_label"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divine_power_checkBox" />
+            <CheckedTextView
+                android:id="@+id/fates_favored_checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
+                android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+                android:padding="8dp"
+                android:text="@string/fates_favored_label"
+                app:layout_constraintLeft_toLeftOf="@+id/guideline_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/power_attack_checkBox" />
 
-    <TextView
-        android:id="@+id/bab_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="@string/bab_label"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/character_level_editText" />
+            <CheckedTextView
+                android:id="@+id/prayer_checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
+                android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+                android:padding="8dp"
+                android:text="@string/prayer_label"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divine_favor_checkBox" />
 
-    <TextView
-        android:id="@+id/strength_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginStart="4dp"
-        android:paddingBottom="0dp"
-        android:paddingTop="8dp"
-        android:text="@string/strength_label"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bab_textView" />
+            <CheckedTextView
+                android:id="@+id/divine_power_checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
+                android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+                android:padding="8dp"
+                android:text="@string/divine_power_label"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/prayer_checkBox" />
 
-    <TextView
-        android:id="@+id/strength_modifier_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginStart="4dp"
-        android:paddingBottom="8dp"
-        android:text="@string/strength_modifier_label"
-        android:textStyle="italic"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/strength_textView" />
+            <TextView
+                android:id="@+id/character_level_editText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
+                android:padding="8dp"
+                android:text="@string/character_level_label"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divine_power_checkBox" />
 
-    <TextView
-        android:id="@+id/dexterity_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginStart="4dp"
-        android:paddingBottom="0dp"
-        android:paddingTop="8dp"
-        android:text="@string/dexterity_label"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/strength_modifier_textView" />
+            <TextView
+                android:id="@+id/bab_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/bab_label"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/character_level_editText" />
 
-    <TextView
-        android:id="@+id/dexterity_modifier_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginStart="4dp"
-        android:paddingBottom="8dp"
-        android:text="@string/dexterity_modifier_label"
-        android:textStyle="italic"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dexterity_textView" />
+            <TextView
+                android:id="@+id/strength_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
+                android:paddingBottom="0dp"
+                android:paddingTop="8dp"
+                android:text="@string/strength_label"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bab_textView" />
 
-    <TextView
-        android:id="@+id/weapon_enchant_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginStart="4dp"
-        android:padding="8dp"
-        android:text="@string/weapon_enchant_label"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dexterity_modifier_textView" />
+            <TextView
+                android:id="@+id/strength_modifier_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
+                android:paddingBottom="8dp"
+                android:text="@string/strength_modifier_label"
+                android:textStyle="italic"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/strength_textView" />
+
+            <TextView
+                android:id="@+id/dexterity_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
+                android:paddingBottom="0dp"
+                android:paddingTop="8dp"
+                android:text="@string/dexterity_label"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/strength_modifier_textView" />
+
+            <TextView
+                android:id="@+id/dexterity_modifier_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
+                android:paddingBottom="8dp"
+                android:text="@string/dexterity_modifier_label"
+                android:textStyle="italic"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dexterity_textView" />
+
+            <TextView
+                android:id="@+id/weapon_enchant_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
+                android:padding="8dp"
+                android:text="@string/weapon_enchant_label"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dexterity_modifier_textView" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

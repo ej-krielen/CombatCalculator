@@ -24,11 +24,13 @@ public class CharacterStatsModel {
     private int miscToHit;
     private int miscDamage;
     private int sizeModifier;
+    private boolean fatesFavored;
 
     private ArrayList<AttackModel> attackList = new ArrayList<>();
 
     public CharacterStatsModel(int characterLevel, int casterLevel, int bab, int strength,
-                               int dexterity, int miscToHit, int miscDamage, int sizeModifier) {
+                               int dexterity, int miscToHit, int miscDamage, int sizeModifier,
+                               boolean fatesFavored) {
         this.characterLevel = characterLevel;
         this.casterLevel = casterLevel;
         this.bab = bab;
@@ -39,6 +41,7 @@ public class CharacterStatsModel {
         this.miscToHit = miscToHit;
         this.miscDamage = miscDamage;
         this.sizeModifier = sizeModifier;
+        this.fatesFavored = fatesFavored;
     }
 
     public void addAttack(String name, String weaponDice, int weaponEnchant, boolean isMelee,
@@ -144,5 +147,13 @@ public class CharacterStatsModel {
 
     public void setSizeModifier(int sizeModifier) {
         this.sizeModifier = sizeModifier;
+    }
+
+    public boolean isFatesFavored() {
+        return fatesFavored;
+    }
+
+    public void setFatesFavored(boolean fatesFavored) {
+        this.fatesFavored = fatesFavored;
     }
 }

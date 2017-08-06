@@ -1,31 +1,24 @@
 package nl.rekijan.combatcalculator.utility;
 
-import android.text.TextUtils;
+import android.os.Build;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.OptionalInt;
 
+import nl.rekijan.combatcalculator.AppConstants.BuffType;
 import nl.rekijan.combatcalculator.model.AttackModel;
 import nl.rekijan.combatcalculator.model.CharacterStatsModel;
-import nl.rekijan.combatcalculator.model.buffs.Bane;
-import nl.rekijan.combatcalculator.model.buffs.BuffInterface;
+import nl.rekijan.combatcalculator.model.buffs.AbstractBuff;
 
 import static java.util.Arrays.asList;
-import static nl.rekijan.combatcalculator.AppConstants.BUFF_TYPE_ALCHEMICAL;
-import static nl.rekijan.combatcalculator.AppConstants.BUFF_TYPE_CIRCUMSTANCE;
-import static nl.rekijan.combatcalculator.AppConstants.BUFF_TYPE_COMPETENCE;
-import static nl.rekijan.combatcalculator.AppConstants.BUFF_TYPE_ENHANCEMENT;
-import static nl.rekijan.combatcalculator.AppConstants.BUFF_TYPE_INHERENT;
-import static nl.rekijan.combatcalculator.AppConstants.BUFF_TYPE_INSIGHT;
-import static nl.rekijan.combatcalculator.AppConstants.BUFF_TYPE_LUCK;
-import static nl.rekijan.combatcalculator.AppConstants.BUFF_TYPE_MORALE;
-import static nl.rekijan.combatcalculator.AppConstants.BUFF_TYPE_PROFANE;
-import static nl.rekijan.combatcalculator.AppConstants.BUFF_TYPE_RACIAL;
-import static nl.rekijan.combatcalculator.AppConstants.BUFF_TYPE_SACRED;
-import static nl.rekijan.combatcalculator.AppConstants.BUFF_TYPE_TRAIT;
 
 /**
- * Utility class for calculations
+ * Utility class for calculations<br>
+ * Calculates ability modifiers from the ability score
+ * Calculates attack rolls<br>
+ * Calculates damage<br>
+ * Calculates weapon dice<br>
  *
  * @author Erik-Jan Krielen ej.krielen@gmail.com
  * @since 2-4-2017
@@ -57,236 +50,100 @@ public class MathHelper {
     }
 
     /**
-     *
-     * @param buffList all buffs
-     * @param character model of the character and its stats
-     * @return String of the selected attack on the character with all its stats and buffs taken into account.
+     * Calculate the total to hit by calling both {@link MathHelper#calculateAttackModifier} and {@link MathHelper#calculateAttackModifiersFromBuffs}
+     * @param buffs list of {@link AbstractBuff} to go through
+     * @param characterModel provides stats for calculations
+     * @param attackModel provides stats for calculations
+     * @return value of to hit from all buffs
      */
-    public String fullAttackString(ArrayList<BuffInterface> buffList, CharacterStatsModel character) {
-
-        ArrayList<AttackModel> attacks = character.getAttacks();
-        //TODO use selected attack
-        AttackModel primaryAttack = attacks.get(0);
-        if (primaryAttack == null) return "No attacks defined";
-
-        //Calculate to hit and damage before buffs
-        int fullBabAttackModifier = calculateFullBabAttackModifier(character, primaryAttack);
-        int damage = calculateDamageModifier(character, primaryAttack);
-
-        //Now apply buffs
-        //Keep track of bonuses that don't stack
-        int alchemicalAttack = 0;
-        int alchemicalDamage = 0;
-        int circumstanceAttack = 0;
-        int circumstanceDamage = 0;
-        int competenceAttack = 0;
-        int competenceDamage = 0;
-        int enhancementAttack = 0;
-        int enhancementDamage = 0;
-        int inherentAttack = 0;
-        int inherentDamage = 0;
-        int insightAttack = 0;
-        int insightDamage = 0;
-        int luckAttack = 0;
-        int luckDamage = 0;
-        int moraleAttack = 0;
-        int moraleDamage = 0;
-        int profaneAttack = 0;
-        int profaneDamage = 0;
-        int racialAttack = 0;
-        int racialDamage = 0;
-        int sacredAttack = 0;
-        int sacredDamage = 0;
-        int traitAttack = 0;
-        int traitDamage = 0;
-        int untypedAttack = 0;
-        int untypedDamage = 0;
-
-        boolean extraAttack = false;
-        boolean isBaneActive = false;
-        boolean isGreaterBaneActive = false;
-        int increasesCreatureSize = 0;
-        int increaseWeaponSize = 0;
-
-        for (BuffInterface buff : buffList) {
-            if (buff.isActive()) {
-
-                if (buff.grantsExtraAttack()) extraAttack = true;
-                if (buff.getName().equals("Bane")) {
-                    isBaneActive = true;
-                    isGreaterBaneActive = ((Bane)buff).isGreaterBaneActive();
-                }
-
-                buff.setCasterLevel(character.getCasterLevel());
-
-                int buffCreatureSize = buff.creatureSizeIncrease();
-                int buffWeaponSize = buff.weaponSizeIncrease();
-                increasesCreatureSize = buffCreatureSize > increasesCreatureSize ? buffCreatureSize : increasesCreatureSize;
-                increasesCreatureSize += buffCreatureSize < 0 ? buffCreatureSize : 0;
-                increaseWeaponSize = (buffWeaponSize > increaseWeaponSize ? buffWeaponSize : increaseWeaponSize);
-                increaseWeaponSize += buffWeaponSize < 0 ? buffWeaponSize : 0;
-
-
-                int buffToHit = buff.calculateToHit(character, primaryAttack);
-                int buffDamage = buff.calculateDamage(character, primaryAttack);
-                switch (buff.getType()) {
-                    case BUFF_TYPE_ALCHEMICAL:
-                        alchemicalAttack = (buffToHit > alchemicalAttack ? buffToHit : alchemicalAttack);
-                        alchemicalDamage = (buffToHit > alchemicalDamage ? buffDamage : alchemicalDamage);
-                        alchemicalAttack += buffToHit < 0 ? buffToHit : 0;
-                        alchemicalDamage += buffDamage < 0 ? buffDamage : 0;
-                        break;
-                    case BUFF_TYPE_CIRCUMSTANCE:
-                        circumstanceAttack = (buffToHit > circumstanceAttack ? buffToHit : circumstanceAttack);
-                        circumstanceDamage = (buffToHit > circumstanceDamage ? buffDamage : circumstanceDamage);
-                        circumstanceAttack += buffToHit < 0 ? buffToHit : 0;
-                        circumstanceDamage += buffDamage < 0 ? buffDamage : 0;
-                        break;
-                    case BUFF_TYPE_COMPETENCE:
-                        competenceAttack = (buffToHit > competenceAttack ? buffToHit : competenceAttack);
-                        competenceDamage = (buffToHit > competenceDamage ? buffDamage : competenceDamage);
-                        competenceAttack += buffToHit < 0 ? buffToHit : 0;
-                        competenceDamage += buffDamage < 0 ? buffDamage : 0;
-                        break;
-                    case BUFF_TYPE_ENHANCEMENT:
-                        enhancementAttack = (buffToHit > enhancementAttack ? buffToHit : enhancementAttack);
-                        enhancementDamage = (buffToHit > enhancementDamage ? buffDamage : enhancementDamage);
-                        enhancementAttack += buffToHit < 0 ? buffToHit : 0;
-                        enhancementDamage += buffDamage < 0 ? buffDamage : 0;
-                        break;
-                    case BUFF_TYPE_INHERENT:
-                        inherentAttack = (buffToHit > inherentAttack ? buffToHit : inherentAttack);
-                        inherentDamage = (buffToHit > inherentDamage ? buffDamage : inherentDamage);
-                        inherentAttack += buffToHit < 0 ? buffToHit : 0;
-                        inherentDamage += buffDamage < 0 ? buffDamage : 0;
-                        break;
-                    case BUFF_TYPE_INSIGHT:
-                        insightAttack = (buffToHit > insightAttack ? buffToHit : insightAttack);
-                        insightDamage = (buffToHit > insightDamage ? buffDamage : insightDamage);
-                        insightAttack += buffToHit < 0 ? buffToHit : 0;
-                        insightDamage += buffDamage < 0 ? buffDamage : 0;
-                        break;
-                    case BUFF_TYPE_LUCK:
-                        luckAttack = (buffToHit > luckAttack ? buffToHit : luckAttack);
-                        luckDamage = (buffToHit > luckDamage ? buffDamage : luckDamage);
-                        luckAttack += buffToHit < 0 ? buffToHit : 0;
-                        luckDamage += buffDamage < 0 ? buffDamage : 0;
-                        break;
-                    case BUFF_TYPE_MORALE:
-                        moraleAttack = (buffToHit > moraleAttack ? buffToHit : moraleAttack);
-                        moraleDamage = (buffToHit > moraleDamage ? buffDamage : moraleDamage);
-                        moraleAttack += buffToHit < 0 ? buffToHit : 0;
-                        moraleDamage += buffDamage < 0 ? buffDamage : 0;
-                        break;
-                    case BUFF_TYPE_PROFANE:
-                        profaneAttack = (buffToHit > profaneAttack ? buffToHit : profaneAttack);
-                        profaneDamage = (buffToHit > profaneDamage ? buffDamage : profaneDamage);
-                        profaneAttack += buffToHit < 0 ? buffToHit : 0;
-                        profaneDamage += buffDamage < 0 ? buffDamage : 0;
-                        break;
-                    case BUFF_TYPE_RACIAL:
-                        racialAttack = (buffToHit > racialAttack ? buffToHit : racialAttack);
-                        racialDamage = (buffToHit > racialDamage ? buffDamage : racialDamage);
-                        racialAttack += buffToHit < 0 ? buffToHit : 0;
-                        racialDamage += buffDamage < 0 ? buffDamage : 0;
-                        break;
-                    case BUFF_TYPE_SACRED:
-                        sacredAttack = (buffToHit > sacredAttack ? buffToHit : sacredAttack);
-                        sacredDamage = (buffToHit > sacredDamage ? buffDamage : sacredDamage);
-                        sacredAttack += buffToHit < 0 ? buffToHit : 0;
-                        sacredDamage += buffDamage < 0 ? buffDamage : 0;
-                        break;
-                    case BUFF_TYPE_TRAIT:
-                        traitAttack = (buffToHit > traitAttack ? buffToHit : traitAttack);
-                        traitDamage = (buffToHit > traitDamage ? buffDamage : traitDamage);
-                        traitAttack += buffToHit < 0 ? buffToHit : 0;
-                        traitDamage += buffDamage < 0 ? buffDamage : 0;
-                        break;
-                    default:
-                        untypedAttack += buffToHit;  //Untyped bonuses can stack
-                        untypedDamage += buffDamage; //Untyped bonuses can stack
-                        break;
-                }
-
-            }
-        }
-
-        fullBabAttackModifier += alchemicalAttack + circumstanceAttack + competenceAttack +
-                enhancementAttack + inherentAttack + insightAttack + luckAttack + moraleAttack +
-                profaneAttack + racialAttack + sacredAttack + traitAttack + untypedAttack;
-        damage += alchemicalDamage + circumstanceDamage + competenceDamage + enhancementDamage +
-                inherentDamage + insightDamage + luckDamage + moraleDamage + profaneDamage +
-                racialDamage + sacredDamage + traitDamage+ untypedDamage;
-
-        String attackRoutine = String.valueOf(fullBabAttackModifier);
-
-        if (extraAttack) {
-            attackRoutine += "/";
-            attackRoutine += String.valueOf(fullBabAttackModifier);
-        }
-        if (character.getBab() >= 6) {
-            attackRoutine += "/+";
-            attackRoutine += String.valueOf(fullBabAttackModifier - 5);
-        }
-        if (character.getBab() >= 11) {
-            attackRoutine += "/+";
-            attackRoutine += String.valueOf(fullBabAttackModifier - 10);
-        }
-        if (character.getBab() >= 16) {
-            attackRoutine += "/+";
-            attackRoutine += String.valueOf(fullBabAttackModifier - 15);
-        }
-
-        String weaponDiceString = getWeaponDamageDiceString((increasesCreatureSize + increaseWeaponSize), primaryAttack.getWeaponDice());
-        String baneDiceString = isGreaterBaneActive ? "4d6" : "2d6";
-        String baneString = isBaneActive ? "+" + baneDiceString : "";
-
-        return String.format("%s +%s (%s%s+%s %s%s%s)",
-                primaryAttack.getName(), attackRoutine, weaponDiceString, baneString, damage,
-                primaryAttack.getCritRange(),
-                (TextUtils.isEmpty(primaryAttack.getCritRange()) ? "" : "/" ),
-                primaryAttack.getCritMultiplier());
+    public int calculateTotalAttackModifier(List<AbstractBuff> buffs, CharacterStatsModel characterModel, AttackModel attackModel)
+    {
+        return calculateAttackModifier(characterModel, attackModel) + calculateAttackModifiersFromBuffs(buffs, characterModel, attackModel);
     }
 
     /**
      * Calculates to hit before buffs
-     * @param character provides stats for calculations
-     * @param attack provides stats for calculations
+     * @param characterModel provides stats for calculations
+     * @param attackModel provides stats for calculations
      * @return value of to hit before buffs
      */
-    private int calculateFullBabAttackModifier(CharacterStatsModel character, AttackModel attack) {
+    private int calculateAttackModifier(CharacterStatsModel characterModel, AttackModel attackModel) {
         int output = 0;
-        output += character.getBab();
+        output += characterModel.getBab();
         //Get strength or dexterity
-        output += (attack.isFinesseable() ? character.getDexterityModifier() : character.getStrengthModifier());
-        output += attack.getWeaponEchant();
-        output += character.getMiscToHit();
-        output += character.getSizeModifier();
+        output += (attackModel.isFinesseable() ? characterModel.getDexterityModifier() : characterModel.getStrengthModifier());
+        output += attackModel.getWeaponEchant();
+        output += characterModel.getMiscToHit();
+        output += characterModel.getSizeModifier();
         return output;
     }
 
     /**
-     * Calculates damage before buffs
-     * @param character provides stats for calculations
-     * @param attack provides stats for calculations
-     * @return damage before buffs
+     * Calculate the to hit bonus from all the buffs
+     * @param buffs list of {@link AbstractBuff} to go through
+     * @param characterModel provides stats for calculations
+     * @param attackModel provides stats for calculations
+     * @return value of to hit from all buffs
      */
-    private int calculateDamageModifier(CharacterStatsModel character, AttackModel attack) {
-        int dmg = 0;
+    private int calculateAttackModifiersFromBuffs(List<AbstractBuff> buffs, CharacterStatsModel characterModel, AttackModel attackModel)
+    {
+        int totalAttackModifierFromBuffs = 0;
 
-        int abilityModifier = character.getStrengthModifier(); //TODO enable option for dex to damage
-        if (attack.isTwoHandedWeapon()) {
-            dmg += Math.floor(abilityModifier * 1.5);
-        } else if (attack.isLigthWeapon()) {
-            dmg += abilityModifier * 0.5;
-        } else {
-            dmg += abilityModifier;
+        for (AbstractBuff buff : buffs)
+        {
+            if (buff.isActive())
+            {
+                buff.setCasterLevel(characterModel.getCasterLevel()); //TODO differentiate between buff's cl and character cl
+                if (buff.getType() == BuffType.UNTYPED)
+                {
+                    totalAttackModifierFromBuffs += buff.calculateToHit(characterModel, attackModel);
+                }
+            }
         }
 
-        dmg += attack.getWeaponEchant();
-        dmg += character.getMiscDamage();
+        for (BuffType buffT : BuffType.values())
+        {
+            if (buffT != BuffType.UNTYPED)
+            {
+                totalAttackModifierFromBuffs += searchHighestAttackRoll(buffs, buffT, characterModel, attackModel);
+            }
+        }
 
-        return dmg;
+        return totalAttackModifierFromBuffs;
+    }
+
+    /**
+     * Takes the buff list and filters out all non-active buffs as well as buffs not from the given BuffType. Then it returns only the highest value for the attack roll.
+     * @param buffList list of {@link AbstractBuff} to go through
+     * @param buffT {@link BuffType} to filter on
+     * @param characterModel {@link CharacterStatsModel} to determine values
+     * @param attack {@link AttackModel} to determine values
+     * @return The highest attack roll value of the buffs, from that type and that is active.
+     */
+    private int searchHighestAttackRoll(List<AbstractBuff> buffList, final BuffType buffT, CharacterStatsModel characterModel, AttackModel attack)
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+        {
+            OptionalInt attackBonus = buffList.stream()
+                    .filter(AbstractBuff::isActive)
+                    .filter(p -> p.getType() == buffT)
+                    .mapToInt(p -> p.calculateToHit(characterModel, attack))
+                    .max();
+            return attackBonus.isPresent() ? attackBonus.getAsInt() : 0;
+        }
+        else
+        {
+            int attackBonus = 0;
+            for (AbstractBuff buff : buffList)
+            {
+              if (buff.isActive() && buff.getType() == buffT)
+              {
+                  int buffToHit = buff.calculateToHit(characterModel, attack);
+                  if (buffToHit > attackBonus) attackBonus = buffToHit;
+              }
+            }
+            return attackBonus;
+        }
     }
 
     private List<String> weaponDiceList = new ArrayList<>(asList("1d2", "1d3", "1d4", "1d6",
@@ -297,12 +154,12 @@ public class MathHelper {
 
     /**
      * Increases (or decreases) the weapon damage dice
-     *
-     * @param numberOfSteps            number of steps up, or negative number for down
+     * @param buffs lists of Buffs to determine how many steps
      * @param startingWeaponDamageDice start value
      * @return new value of weapon damage dice
      */
-    private String getWeaponDamageDiceString(int numberOfSteps, String startingWeaponDamageDice) {
+    public String getWeaponDamageDiceString(List<AbstractBuff> buffs, String startingWeaponDamageDice) {
+        int numberOfSteps = totalSizeIncreases(buffs);
         if (weaponDiceList.contains(startingWeaponDamageDice)) {
             int currentIndex = weaponDiceList.indexOf(startingWeaponDamageDice);
             return weaponDiceList.get(currentIndex + numberOfSteps);
@@ -313,4 +170,172 @@ public class MathHelper {
         return startingWeaponDamageDice;
     }
 
+    /**
+     * Calculates the number of size increase steps by calling both {@link MathHelper#searchHighestWeaponSizeIncrease} and {@link MathHelper#searchHighestCreatureSizeIncrease}
+     * @param buffList list of {@link AbstractBuff} to go through
+     * @return Total number of size increases
+     */
+    private int totalSizeIncreases(List<AbstractBuff> buffList)
+    {
+        return searchHighestWeaponSizeIncrease(buffList) + searchHighestCreatureSizeIncrease(buffList);
+    }
+
+    /**
+     * Filters the buff lists and returns the highest weaponSizeIncrease of all the active buffs.
+     * @param buffList list of {@link AbstractBuff} to go through
+     * @return The highest weaponSizeIncrease of all the active buffs.
+     */
+    private int searchHighestWeaponSizeIncrease(List<AbstractBuff> buffList)
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            OptionalInt weaponSizeIncrease = buffList.stream()
+                    .filter(AbstractBuff::isActive)
+                    .mapToInt(AbstractBuff::weaponSizeIncrease)
+                    .max();
+            return weaponSizeIncrease.isPresent() ? weaponSizeIncrease.getAsInt() : 0;
+        }
+        else
+        {
+            int weaponSizeIncrease = 0;
+            for (AbstractBuff buff : buffList)
+            {
+                if (buff.isActive())
+                {
+                    if (buff.weaponSizeIncrease() > weaponSizeIncrease) weaponSizeIncrease = buff.weaponSizeIncrease();
+                }
+            }
+            return weaponSizeIncrease;
+        }
+    }
+
+    /**
+     * Filters the buff lists and returns the highest creatureSizeIncrease of all the active buffs.
+     * @param buffList list of {@link AbstractBuff} to go through
+     * @return The highest creatureSizeIncrease of all the active buffs.
+     */
+    private int searchHighestCreatureSizeIncrease(List<AbstractBuff> buffList)
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            OptionalInt creatureSizeIncrease = buffList.stream()
+                    .filter(AbstractBuff::isActive)
+                    .mapToInt(AbstractBuff::creatureSizeIncrease)
+                    .max();
+            return creatureSizeIncrease.isPresent() ? creatureSizeIncrease.getAsInt() : 0;
+        }
+        else
+        {
+            int creatureSizeIncrease = 0;
+            for (AbstractBuff buff : buffList)
+            {
+                if (buff.isActive())
+                {
+                    if (buff.creatureSizeIncrease() > creatureSizeIncrease) creatureSizeIncrease = buff.creatureSizeIncrease();
+                }
+            }
+            return creatureSizeIncrease;
+        }
+    }
+
+    /**
+     * Calculate the total damage by calling both {@link MathHelper#calculateDamage} and {@link MathHelper#calculateDamageFromBuffs}
+     * @param buffs list of {@link AbstractBuff} to go through
+     * @param characterModel provides stats for calculations
+     * @param attackModel provides stats for calculations
+     * @return damage from all the buffs
+     */
+    public int calculateTotalDamage(List<AbstractBuff> buffs, CharacterStatsModel characterModel, AttackModel attackModel)
+    {
+        return calculateDamage(characterModel, attackModel) + calculateDamageFromBuffs(buffs, characterModel, attackModel);
+    }
+
+    /**
+     * Calculates damage before buffs
+     * @param characterModel provides stats for calculations
+     * @param attackModel provides stats for calculations
+     * @return damage before buffs
+     */
+    private int calculateDamage(CharacterStatsModel characterModel, AttackModel attackModel) {
+        int dmg = 0;
+
+        int abilityModifier = characterModel.getStrengthModifier(); //TODO enable option for dex to damage
+        if (attackModel.isTwoHandedWeapon()) {
+            dmg += Math.floor(abilityModifier * 1.5);
+        } else if (attackModel.isLigthWeapon()) {
+            dmg += abilityModifier * 0.5;
+        } else {
+            dmg += abilityModifier;
+        }
+
+        dmg += attackModel.getWeaponEchant();
+        dmg += characterModel.getMiscDamage();
+
+        return dmg;
+    }
+
+    /**
+     * Calculates damage from all the buffs
+     * @param buffs list of {@link AbstractBuff} to go through
+     * @param characterModel provides stats for calculations
+     * @param attackModel provides stats for calculations
+     * @return damage from all the buffs
+     */
+    private int calculateDamageFromBuffs(List<AbstractBuff> buffs, CharacterStatsModel characterModel, AttackModel attackModel)
+    {
+        int totalDamageFromBuffs = 0;
+
+        for (AbstractBuff buff : buffs)
+        {
+            if (buff.isActive())
+            {
+                buff.setCasterLevel(characterModel.getCasterLevel()); //TODO differentiate between buff's cl and character cl
+                if (buff.getType() == BuffType.UNTYPED)
+                {
+                    totalDamageFromBuffs += buff.calculateDamage(characterModel, attackModel);
+                }
+            }
+        }
+
+        for (BuffType buffT : BuffType.values())
+        {
+            if (buffT != BuffType.UNTYPED)
+            {
+                totalDamageFromBuffs += searchHighestDamage(buffs, buffT, characterModel, attackModel);
+            }
+        }
+
+        return totalDamageFromBuffs;
+    }
+
+    /**
+     * Takes the buff list and filters out all non-active buffs as well as buffs not from the given BuffType. Then it returns only the highest damage value.
+     * @param buffList list of {@link AbstractBuff} to go through
+     * @param buffT {@link BuffType} to filter on
+     * @param characterModel {@link CharacterStatsModel} to determine values
+     * @param attack {@link AttackModel} to determine values
+     * @return The highest damage value of the buffs, from that type and that is active.
+     */
+    private int searchHighestDamage(List<AbstractBuff> buffList, final BuffType buffT, CharacterStatsModel characterModel, AttackModel attack)
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            OptionalInt damage = buffList.stream()
+                    .filter(AbstractBuff::isActive)
+                    .filter(p -> p.getType() == buffT)
+                    .mapToInt(p -> p.calculateDamage(characterModel, attack))
+                    .max();
+            return damage.isPresent() ? damage.getAsInt() : 0;
+        }
+        else
+        {
+            int damage = 0;
+            for (AbstractBuff buff : buffList)
+            {
+                if (buff.isActive() && buff.getType() == buffT)
+                {
+                    int buffToHit = buff.calculateToHit(characterModel, attack);
+                    if (buffToHit > damage) damage = buffToHit;
+                }
+            }
+            return damage;
+        }
+    }
 }

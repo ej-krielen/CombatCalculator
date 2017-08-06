@@ -1,7 +1,7 @@
 package nl.rekijan.combatcalculator;
 
 /**
- * Constants of the class
+ * Constants of the class, application wide
  *
  * @author Erik-Jan Krielen ej.krielen@gmail.com
  * @since 5-4-2017
@@ -9,25 +9,28 @@ package nl.rekijan.combatcalculator;
 
 public class AppConstants {
 
-    public static final String MAX_VALUE = "MAX_VALUE";
+    public static final String MAX_VALUE_KEY = "MAX_VALUE_KEY";
     public static final String NUMBER_PICKER_VALUE = "NUMBER_PICKER_VALUE";
     public static final String DIALOG_TITLE = "DIALOG_TITLE";
     public static final String DIALOG_MESSAGE = "DIALOG_MESSAGE";
 
-    public static final String BUFF_TYPE_ALCHEMICAL = "BUFF_TYPE_ALCHEMICAL";
-    public static final String BUFF_TYPE_CIRCUMSTANCE = "BUFF_TYPE_CIRCUMSTANCE";
-    public static final String BUFF_TYPE_COMPETENCE = "BUFF_TYPE_COMPETENCE";
-    public static final String BUFF_TYPE_ENHANCEMENT = "BUFF_TYPE_ENHANCEMENT";
-    public static final String BUFF_TYPE_INHERENT = "BUFF_TYPE_INHERENT";
-    public static final String BUFF_TYPE_INSIGHT = "BUFF_TYPE_INSIGHT";
-    public static final String BUFF_TYPE_LUCK = "BUFF_TYPE_LUCK";
-    public static final String BUFF_TYPE_MORALE = "BUFF_TYPE_MORALE";
-    public static final String BUFF_TYPE_PROFANE = "BUFF_TYPE_PROFANE";
-    public static final String BUFF_TYPE_RACIAL = "BUFF_TYPE_RACIAL";
-    public static final String BUFF_TYPE_SACRED = "BUFF_TYPE_SACRED";
-    public static final String BUFF_TYPE_SIZE = "BUFF_TYPE_SIZE";
-    public static final String BUFF_TYPE_TRAIT = "BUFF_TYPE_TRAIT";
-    public static final String BUFF_TYPE_UNTYPED = "BUFF_TYPE_UNTYPED";
+    public enum BuffType
+    {
+        ALCHEMICAL,
+        CIRCUMSTANCE,
+        COMPETENCE,
+        ENHANCEMENT,
+        INHERENT,
+        INSIGHT,
+        LUCK,
+        MORALE,
+        PROFANE,
+        RACIAL,
+        SACRED,
+        SIZE,
+        TRAIT,
+        UNTYPED
+    }
 
     public static final String DIALOG_CHARACTER_LEVEL = "DIALOG_CHARACTER_LEVEL";
     public static final String DIALOG_CASTER_LEVEL = "DIALOG_CASTER_LEVEL";

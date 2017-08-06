@@ -9,17 +9,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import nl.rekijan.combatcalculator.R;
+import nl.rekijan.combatcalculator.model.AttackRoutineModel;
 import nl.rekijan.combatcalculator.model.CharacterStatsModel;
+import nl.rekijan.combatcalculator.model.buffs.AbstractBuff;
 import nl.rekijan.combatcalculator.model.buffs.Bane;
-import nl.rekijan.combatcalculator.model.buffs.BuffInterface;
 import nl.rekijan.combatcalculator.model.buffs.DivineFavor;
 import nl.rekijan.combatcalculator.model.buffs.DivinePower;
 import nl.rekijan.combatcalculator.model.buffs.Flanking;
 import nl.rekijan.combatcalculator.model.buffs.PowerAttack;
 import nl.rekijan.combatcalculator.model.buffs.Prayer;
-import nl.rekijan.combatcalculator.utility.MathHelper;
 import nl.rekijan.combatcalculator.utility.dialogs.NumberPickerDialogFragment;
 
 import static nl.rekijan.combatcalculator.AppConstants.DIALOG_BAB;
@@ -30,13 +31,14 @@ import static nl.rekijan.combatcalculator.AppConstants.DIALOG_MISC_TO_HIT;
 import static nl.rekijan.combatcalculator.AppConstants.DIALOG_STRENGTH;
 import static nl.rekijan.combatcalculator.AppConstants.DIALOG_TITLE;
 import static nl.rekijan.combatcalculator.AppConstants.DIALOG_WEAPON_ENCHANT;
-import static nl.rekijan.combatcalculator.AppConstants.MAX_VALUE;
+import static nl.rekijan.combatcalculator.AppConstants.MAX_VALUE_KEY;
 import static nl.rekijan.combatcalculator.AppConstants.NUMBER_PICKER_VALUE;
 
 public class MainActivity extends AppCompatActivity implements NumberPickerDialogFragment.NoticeDialogListener, View.OnClickListener {
 
-    private ArrayList<BuffInterface> buffList = new ArrayList<>();
-    private CharacterStatsModel character;
+    private List<AbstractBuff> buffList = new ArrayList<>();
+    private CharacterStatsModel characterModel;
+    private AttackRoutineModel attackRoutineModel;
     private TextView fullAttackTextView;
     private TextView characterLevelTextView;
     private TextView babTextView;
@@ -53,8 +55,8 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        character = new CharacterStatsModel(10, 10, 7, 18, 14, 0, 0, 0); //TODO replace with actual character building
-        character.addAttack("greatsword", "2d6", 2, true, true, false, false, true, false, "19-20", "x2"); //TODO replace with actual attack creator
+        characterModel = new CharacterStatsModel(10, 10, 7, 18, 14, 0, 0, 0, false); //TODO replace with actual characterModel building
+        characterModel.addAttack("greatsword", "2d6", 2, true, true, false, false, true, false, "19-20", "x2"); //TODO replace with actual attack creator
         final PowerAttack powerAttack = new PowerAttack();
         buffList.add(powerAttack);
         final Flanking flanking = new Flanking();
@@ -67,28 +69,29 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
         buffList.add(prayer);
         final DivinePower divinePower = new DivinePower();
         buffList.add(divinePower);
+        attackRoutineModel = new AttackRoutineModel(this, characterModel, characterModel.getAttacks().get(0), buffList); //TODO selectable attack
 
         //Set all text views on startup
         fullAttackTextView = (TextView) findViewById(R.id.full_attack_textView);
-        calculate(character, fullAttackTextView);
+        fullAttackTextView.setText(attackRoutineModel.toString());
         characterLevelTextView = (TextView) findViewById(R.id.character_level_editText);
-        characterLevelTextView.setText(String.format("%s%s", getString(R.string.character_level_label), String.valueOf(character.getCharacterLevel())));
+        characterLevelTextView.setText(String.format("%s%s", getString(R.string.character_level_label), String.valueOf(characterModel.getCharacterLevel())));
         babTextView = (TextView) findViewById(R.id.bab_textView);
-        babTextView.setText(String.format("%s%s", getString(R.string.bab_label), String.valueOf(character.getBab())));
+        babTextView.setText(String.format("%s%s", getString(R.string.bab_label), String.valueOf(characterModel.getBab())));
         strengthTextView = (TextView) findViewById(R.id.strength_textView);
-        strengthTextView.setText(String.format("%s%s", getString(R.string.strength_label), String.valueOf(character.getStrength())));
+        strengthTextView.setText(String.format("%s%s", getString(R.string.strength_label), String.valueOf(characterModel.getStrength())));
         strengthModifierTextView = (TextView) findViewById(R.id.strength_modifier_textView);
-        strengthModifierTextView.setText(String.format("%s%s", getString(R.string.strength_modifier_label), String.valueOf(character.getStrengthModifier())));
+        strengthModifierTextView.setText(String.format("%s%s", getString(R.string.strength_modifier_label), String.valueOf(characterModel.getStrengthModifier())));
         dexterityTextView = (TextView) findViewById(R.id.dexterity_textView);
-        dexterityTextView.setText(String.format("%s%s", getString(R.string.dexterity_label), String.valueOf(character.getDexterity())));
+        dexterityTextView.setText(String.format("%s%s", getString(R.string.dexterity_label), String.valueOf(characterModel.getDexterity())));
         dexterityModifierTextView = (TextView) findViewById(R.id.dexterity_modifier_textView);
-        dexterityModifierTextView.setText(String.format("%s%s", getString(R.string.dexterity_modifier_label), String.valueOf(character.getDexterityModifier())));
+        dexterityModifierTextView.setText(String.format("%s%s", getString(R.string.dexterity_modifier_label), String.valueOf(characterModel.getDexterityModifier())));
         weaponEnchantTextView = (TextView) findViewById(R.id.weapon_enchant_textView);
-        weaponEnchantTextView.setText(String.format("%s%s", getString(R.string.weapon_enchant_label), String.valueOf(character.getAttacks().get(0).getWeaponEchant()))); //TODO hardcoded atm
+        weaponEnchantTextView.setText(String.format("%s%s", getString(R.string.weapon_enchant_label), String.valueOf(characterModel.getAttacks().get(0).getWeaponEchant()))); //TODO hardcoded atm
         miscToHitTextView = (TextView) findViewById(R.id.misc_to_hit_textView);
-        miscToHitTextView.setText(String.format("%s%s", getString(R.string.misc_to_hit_label), String.valueOf(character.getMiscToHit())));
+        miscToHitTextView.setText(String.format("%s%s", getString(R.string.misc_to_hit_label), String.valueOf(characterModel.getMiscToHit())));
         miscDamageTextView = (TextView) findViewById(R.id.misc_damage_textView);
-        miscDamageTextView.setText(String.format("%s%s", getString(R.string.misc_damage_label), String.valueOf(character.getMiscDamage())));
+        miscDamageTextView.setText(String.format("%s%s", getString(R.string.misc_damage_label), String.valueOf(characterModel.getMiscDamage())));
 
         //Set listeners on the text views
         characterLevelTextView.setOnClickListener(this);
@@ -110,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
                     flankingCheckBox.setChecked(true);
                 }
                 flanking.setIsActive(flankingCheckBox.isChecked());
-                calculate(character, fullAttackTextView);
+                updateAttackRoutineModel();
             }
         });
 
@@ -124,8 +127,8 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
                 } else {
                     outflankCheckBox.setChecked(true);
                 }
-                flanking.setIsOutflanActive(outflankCheckBox.isChecked());
-                calculate(character, fullAttackTextView);
+                flanking.setIsOutflankActive(outflankCheckBox.isChecked());
+                updateAttackRoutineModel();
             }
         });
 
@@ -140,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
                     baneCheckBox.setChecked(true);
                 }
                 bane.setIsActive(baneCheckBox.isChecked());
-                calculate(character, fullAttackTextView);
+                updateAttackRoutineModel();
             }
         });
 
@@ -155,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
                     greaterBaneCheckBox.setChecked(true);
                 }
                 bane.setIsGreaterBaneActive(greaterBaneCheckBox.isChecked());
-                calculate(character, fullAttackTextView);
+                updateAttackRoutineModel();
             }
         });
 
@@ -170,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
                     powerAttackCheckBox.setChecked(true);
                 }
                 powerAttack.setIsActive(powerAttackCheckBox.isChecked());
-                calculate(character, fullAttackTextView);
+                updateAttackRoutineModel();
             }
         });
 
@@ -185,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
                     divineFavorCheckBox.setChecked(true);
                 }
                 divineFavor.setIsActive(divineFavorCheckBox.isChecked());
-                calculate(character, fullAttackTextView);
+                updateAttackRoutineModel();
             }
         });
 
@@ -199,10 +202,8 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
                 } else {
                     fatesFavoredCheckBox.setChecked(true);
                 }
-                divineFavor.setIsFatesFavored(fatesFavoredCheckBox.isChecked());
-                prayer.setIsFatesFavored(fatesFavoredCheckBox.isChecked());
-                divinePower.setIsFatesFavored(fatesFavoredCheckBox.isChecked());
-                calculate(character, fullAttackTextView);
+                characterModel.setFatesFavored(fatesFavoredCheckBox.isChecked());
+                updateAttackRoutineModel();
             }
         });
 
@@ -217,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
                     prayerCheckBox.setChecked(true);
                 }
                 prayer.setIsActive(prayerCheckBox.isChecked());
-                calculate(character, fullAttackTextView);
+                updateAttackRoutineModel();
             }
         });
 
@@ -232,81 +233,85 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
                     divinePowerCheckBox.setChecked(true);
                 }
                 divinePower.setIsActive(divinePowerCheckBox.isChecked());
-                calculate(character, fullAttackTextView);
+                updateAttackRoutineModel();
             }
         });
 
     }
 
     /**
-     * Uses {@linkplain MathHelper#fullAttackString(ArrayList, CharacterStatsModel) a method in helper class} to make a string based on the stats of the paramater
-     * @param character use this model's stats
-     * @param fullAttackTextView text view to set text into
+     * Updates all the info {@link AttackRoutineModel} needs to build the string and sets the TextView with it
      */
-    public void calculate(CharacterStatsModel character, TextView fullAttackTextView) {
-        String fullAttackString = getString(R.string.full_attack_label) +
-                MathHelper.getInstance().fullAttackString(buffList, character);
-        fullAttackTextView.setText(fullAttackString);
+    public void updateAttackRoutineModel() {
+        attackRoutineModel.updateAttackRoutineModel(characterModel, characterModel.getAttacks().get(0), buffList, fullAttackTextView);
     }
 
-    public ArrayList<BuffInterface> getBuffList() {
+    public List<AbstractBuff> getBuffList() {
         return buffList;
     }
 
-    public void setBuffList(ArrayList<BuffInterface> buffList) {
+    public void setBuffList(ArrayList<AbstractBuff> buffList) {
         this.buffList = buffList;
     }
 
     /**
      * When dialog is closed with the positive button, use the value in a manner corresponding with the tag of the dialog.<br>
-     *     Usually updating the field in the model and the text view.
+     *     Calls methods to update the field in the model and its text view, and recalculates the attack string.
      * @param dialog calling dialog
      * @param value value that was submitted
      */
     @Override
     public void onDialogPositiveClick(DialogFragment dialog, int value) {
+        updateCharacterModelAndView(dialog, value);
+        updateAttackRoutineModel();
+    }
+
+    /**
+     * Update the character model and the TexView
+     * @param dialog calling dialog
+     * @param value value that was submitted
+     */
+    private void updateCharacterModelAndView(DialogFragment dialog, int value) {
         switch (dialog.getTag()) {
             case DIALOG_CHARACTER_LEVEL:
-                character.setCharacterLevel(value);
+                characterModel.setCharacterLevel(value);
                 characterLevelTextView.setText(String.format("%s%s", getString(R.string.character_level_label), value));
-                character.setCasterLevel(value); //TODO remove later
+                characterModel.setCasterLevel(value); //TODO remove later //TODO differentiate between buff's cl and character cl
                 break;
             case DIALOG_BAB:
-                character.setBab(value);
+                characterModel.setBab(value);
                 babTextView.setText(String.format("%s%s", getString(R.string.bab_label), value));
                 break;
             case DIALOG_STRENGTH:
-                character.setStrength(value);
+                characterModel.setStrength(value);
                 strengthTextView.setText(String.format("%s%s", getString(R.string.strength_label), value));
-                strengthModifierTextView.setText(String.format("%s%s", getString(R.string.strength_modifier_label), String.valueOf(character.getStrengthModifier())));
+                strengthModifierTextView.setText(String.format("%s%s", getString(R.string.strength_modifier_label), String.valueOf(characterModel.getStrengthModifier())));
                 break;
             case DIALOG_DEXTERITY:
-                character.setDexterity(value);
+                characterModel.setDexterity(value);
                 dexterityTextView.setText(String.format("%s%s", getString(R.string.dexterity_label), value));
-                dexterityModifierTextView.setText(String.format("%s%s", getString(R.string.dexterity_modifier_label), String.valueOf(character.getDexterityModifier())));
+                dexterityModifierTextView.setText(String.format("%s%s", getString(R.string.dexterity_modifier_label), String.valueOf(characterModel.getDexterityModifier())));
                 break;
             case DIALOG_WEAPON_ENCHANT:
-                character.getAttacks().get(0).setWeaponEchant(value); //TODO hardcoded atm
+                characterModel.getAttacks().get(0).setWeaponEchant(value); //TODO hardcoded atm
                 weaponEnchantTextView.setText(String.format("%s%s", getString(R.string.weapon_enchant_label), value));
                 break;
             case DIALOG_MISC_TO_HIT:
-                character.setMiscToHit(value);
+                characterModel.setMiscToHit(value);
                 miscToHitTextView.setText(String.format("%s%s", getString(R.string.misc_to_hit_label), value));
                 break;
             case DIALOG_MISC_DAMAGE:
-                character.setMiscDamage(value);
+                characterModel.setMiscDamage(value);
                 miscDamageTextView.setText(String.format("%s%s", getString(R.string.misc_damage_label), value));
                 break;
             default:
                 Toast.makeText(this, R.string.error_no_such_value + dialog.getTag(), Toast.LENGTH_LONG).show();
                 break;
         }
-        calculate(character, fullAttackTextView);
     }
 
     @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
-    }
+    public void onDialogNegativeClick(DialogFragment dialog) {}
 
     /**
      * When a text view with a listener is called, check which text view is called and open a dialog with the correct information.
@@ -317,44 +322,44 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
         Bundle bundle = new Bundle();
         DialogFragment dialog = new NumberPickerDialogFragment();
         if (view == characterLevelTextView) {
-            bundle.putInt(NUMBER_PICKER_VALUE, character.getCharacterLevel());
-            bundle.putInt(MAX_VALUE, 20);
+            bundle.putInt(NUMBER_PICKER_VALUE, characterModel.getCharacterLevel());
+            bundle.putInt(MAX_VALUE_KEY, 20);
             bundle.putString(DIALOG_TITLE, getString(R.string.character_level_dialog_title));
             dialog.setArguments(bundle);
             dialog.show(getFragmentManager(), DIALOG_CHARACTER_LEVEL);
         } else if (view == babTextView) {
-            bundle.putInt(NUMBER_PICKER_VALUE, character.getBab());
-            bundle.putInt(MAX_VALUE, 20);
+            bundle.putInt(NUMBER_PICKER_VALUE, characterModel.getBab());
+            bundle.putInt(MAX_VALUE_KEY, 20);
             bundle.putString(DIALOG_TITLE, getString(R.string.bab_dialog_title));
             dialog.setArguments(bundle);
             dialog.show(getFragmentManager(), DIALOG_BAB);
         } else if (view == strengthTextView) {
-            bundle.putInt(NUMBER_PICKER_VALUE, character.getStrength());
-            bundle.putInt(MAX_VALUE, 100);
+            bundle.putInt(NUMBER_PICKER_VALUE, characterModel.getStrength());
+            bundle.putInt(MAX_VALUE_KEY, 100);
             bundle.putString(DIALOG_TITLE, getString(R.string.strength_dialog_title));
             dialog.setArguments(bundle);
             dialog.show(getFragmentManager(), DIALOG_STRENGTH);
         } else if (view == dexterityTextView) {
-            bundle.putInt(NUMBER_PICKER_VALUE, character.getDexterity());
-            bundle.putInt(MAX_VALUE, 100);
+            bundle.putInt(NUMBER_PICKER_VALUE, characterModel.getDexterity());
+            bundle.putInt(MAX_VALUE_KEY, 100);
             bundle.putString(DIALOG_TITLE, getString(R.string.dexterity_dialog_title));
             dialog.setArguments(bundle);
             dialog.show(getFragmentManager(), DIALOG_DEXTERITY);
         } else if (view == weaponEnchantTextView) {
-            bundle.putInt(NUMBER_PICKER_VALUE, character.getAttacks().get(0).getWeaponEchant()); //TODO hardcoded atm
-            bundle.putInt(MAX_VALUE, 5);
+            bundle.putInt(NUMBER_PICKER_VALUE, characterModel.getAttacks().get(0).getWeaponEchant()); //TODO hardcoded atm
+            bundle.putInt(MAX_VALUE_KEY, 5);
             bundle.putString(DIALOG_TITLE, getString(R.string.weapon_enchant_dialog_title));
             dialog.setArguments(bundle);
             dialog.show(getFragmentManager(), DIALOG_WEAPON_ENCHANT);
         } else if (view == miscToHitTextView) {
-            bundle.putInt(NUMBER_PICKER_VALUE, character.getMiscToHit());
-            bundle.putInt(MAX_VALUE, 100);
+            bundle.putInt(NUMBER_PICKER_VALUE, characterModel.getMiscToHit());
+            bundle.putInt(MAX_VALUE_KEY, 100);
             bundle.putString(DIALOG_TITLE, getString(R.string.misc_to_hit_dialog_title));
             dialog.setArguments(bundle);
             dialog.show(getFragmentManager(), DIALOG_MISC_TO_HIT);
         } else if (view == miscDamageTextView) {
-            bundle.putInt(NUMBER_PICKER_VALUE, character.getMiscDamage());
-            bundle.putInt(MAX_VALUE, 100);
+            bundle.putInt(NUMBER_PICKER_VALUE, characterModel.getMiscDamage());
+            bundle.putInt(MAX_VALUE_KEY, 100);
             bundle.putString(DIALOG_TITLE, getString(R.string.misc_damage_dialog_title));
             dialog.setArguments(bundle);
             dialog.show(getFragmentManager(), DIALOG_MISC_DAMAGE);

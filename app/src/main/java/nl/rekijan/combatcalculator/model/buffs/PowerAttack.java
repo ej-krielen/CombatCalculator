@@ -1,9 +1,8 @@
 package nl.rekijan.combatcalculator.model.buffs;
 
+import nl.rekijan.combatcalculator.AppConstants.BuffType;
 import nl.rekijan.combatcalculator.model.AttackModel;
 import nl.rekijan.combatcalculator.model.CharacterStatsModel;
-
-import static nl.rekijan.combatcalculator.AppConstants.BUFF_TYPE_UNTYPED;
 
 /**
  * Logic of PowerAttack
@@ -12,10 +11,11 @@ import static nl.rekijan.combatcalculator.AppConstants.BUFF_TYPE_UNTYPED;
  * @since 4-4-2017
  */
 
-public class PowerAttack implements BuffInterface {
+public class PowerAttack extends AbstractBuff {
 
-    private boolean isActive;
-    private int casterLevel;
+    public PowerAttack() {
+        super("Power Attack", BuffType.UNTYPED, false, 0, 0);
+    }
 
     public int calculateToHit(CharacterStatsModel character, AttackModel attack) {
         return (int) -(1 + Math.floor(character.getBab() / 4)); //Inverse because the to hit is a penalty
@@ -27,48 +27,5 @@ public class PowerAttack implements BuffInterface {
         if (attack.isTwoHandedWeapon()) modifier = 3;
         if (attack.isLigthWeapon()) modifier = 1;
         return steps * modifier;
-    }
-
-    @Override
-    public String getName() {
-        return "Power Attack";
-    }
-
-    @Override
-    public String getType() {
-        return BUFF_TYPE_UNTYPED;
-    }
-
-    @Override
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setIsActive(boolean active) {
-        isActive = active;
-    }
-
-    @Override
-    public boolean grantsExtraAttack() {
-        return false;
-    }
-
-    @Override
-    public int creatureSizeIncrease() {
-        return 0;
-    }
-
-    @Override
-    public int weaponSizeIncrease() {
-        return 0;
-    }
-
-    public int getCasterLevel() {
-        return casterLevel;
-    }
-
-    @Override
-    public void setCasterLevel(int casterLevel) {
-        this.casterLevel = casterLevel;
     }
 }

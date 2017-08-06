@@ -2,8 +2,7 @@ package nl.rekijan.combatcalculator.model.buffs;
 
 import nl.rekijan.combatcalculator.model.AttackModel;
 import nl.rekijan.combatcalculator.model.CharacterStatsModel;
-
-import static nl.rekijan.combatcalculator.AppConstants.BUFF_TYPE_ENHANCEMENT;
+import nl.rekijan.combatcalculator.AppConstants.BuffType;
 
 /**
  * Logic of the bane buff
@@ -12,10 +11,13 @@ import static nl.rekijan.combatcalculator.AppConstants.BUFF_TYPE_ENHANCEMENT;
  * @since 20-7-2017
  */
 
-public class Bane implements BuffInterface {
+public class Bane extends AbstractBuff {
 
-    private boolean isActive;
     private boolean isGreaterBaneActive;
+
+    public Bane() {
+        super("Bane", BuffType.ENHANCEMENT);
+    }
 
     @Override
     public int calculateToHit(CharacterStatsModel character, AttackModel attack) {
@@ -25,51 +27,6 @@ public class Bane implements BuffInterface {
     @Override
     public int calculateDamage(CharacterStatsModel character, AttackModel attack) {
         return 2;
-    }
-
-    @Override
-    public String getName() {
-        return "Bane";
-    }
-
-    @Override
-    public String getType() {
-        return BUFF_TYPE_ENHANCEMENT;
-    }
-
-    @Override
-    public boolean isActive() {
-        return isActive;
-    }
-
-    @Override
-    public void setIsActive(boolean active) {
-        isActive = active;
-    }
-
-    @Override
-    public boolean grantsExtraAttack() {
-        return false;
-    }
-
-    @Override
-    public int creatureSizeIncrease() {
-        return 0;
-    }
-
-    @Override
-    public int weaponSizeIncrease() {
-        return 0;
-    }
-
-    @Override
-    public int getCasterLevel() {
-        return 0;
-    }
-
-    @Override
-    public void setCasterLevel(int casterLevel) {
-
     }
 
     public boolean isGreaterBaneActive(){

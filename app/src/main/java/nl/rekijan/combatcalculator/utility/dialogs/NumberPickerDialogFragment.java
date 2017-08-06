@@ -13,7 +13,7 @@ import android.widget.NumberPicker;
 import nl.rekijan.combatcalculator.R;
 
 import static nl.rekijan.combatcalculator.AppConstants.DIALOG_TITLE;
-import static nl.rekijan.combatcalculator.AppConstants.MAX_VALUE;
+import static nl.rekijan.combatcalculator.AppConstants.MAX_VALUE_KEY;
 import static nl.rekijan.combatcalculator.AppConstants.NUMBER_PICKER_VALUE;
 
 /**
@@ -62,7 +62,7 @@ public class NumberPickerDialogFragment extends DialogFragment {
         final NumberPicker numberPicker = (NumberPicker) dialogView.findViewById(R.id.number_picker_field);
         numberPicker.setMinValue(0);
         Bundle bundle = getArguments();
-        numberPicker.setMaxValue(bundle.getInt(MAX_VALUE));
+        numberPicker.setMaxValue(bundle.getInt(MAX_VALUE_KEY));
         numberPicker.setValue(bundle.getInt(NUMBER_PICKER_VALUE));
 
         builder.setTitle(bundle.getString(DIALOG_TITLE));

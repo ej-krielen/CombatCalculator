@@ -1,9 +1,9 @@
 package nl.rekijan.combatcalculator.model.buffs;
 
+import nl.rekijan.combatcalculator.AppConstants.BuffType;
 import nl.rekijan.combatcalculator.model.AttackModel;
 import nl.rekijan.combatcalculator.model.CharacterStatsModel;
 
-import static nl.rekijan.combatcalculator.AppConstants.BUFF_TYPE_UNTYPED;
 
 /**
  * Logic of flanking bonus
@@ -12,14 +12,17 @@ import static nl.rekijan.combatcalculator.AppConstants.BUFF_TYPE_UNTYPED;
  * @since 20-7-2017
  */
 
-public class Flanking implements BuffInterface {
+public class Flanking extends AbstractBuff {
 
-    private boolean isActive;
-    private boolean isOutflanActive;
+    private boolean isOutflankActive;
+
+    public Flanking() {
+        super("Flanking", BuffType.UNTYPED);
+    }
 
     @Override
     public int calculateToHit(CharacterStatsModel character, AttackModel attack) {
-        return isOutflanActive ? 4 : 2;
+        return isOutflankActive ? 4 : 2;
     }
 
     @Override
@@ -27,51 +30,7 @@ public class Flanking implements BuffInterface {
         return 0;
     }
 
-    @Override
-    public String getName() {
-        return "Flanking";
-    }
-
-    @Override
-    public String getType() {
-        return BUFF_TYPE_UNTYPED;
-    }
-
-    @Override
-    public boolean isActive() {
-        return isActive;
-    }
-
-    @Override
-    public void setIsActive(boolean active) {
-        isActive = active;
-    }
-
-    @Override
-    public boolean grantsExtraAttack() {
-        return false;
-    }
-
-    @Override
-    public int creatureSizeIncrease() {
-        return 0;
-    }
-
-    @Override
-    public int weaponSizeIncrease() {
-        return 0;
-    }
-
-    @Override
-    public int getCasterLevel() {
-        return 0;
-    }
-
-    @Override
-    public void setCasterLevel(int casterLevel) {
-    }
-
-    public void setIsOutflanActive(boolean active) {
-        isOutflanActive = active;
+    public void setIsOutflankActive(boolean active) {
+        isOutflankActive = active;
     }
 }
