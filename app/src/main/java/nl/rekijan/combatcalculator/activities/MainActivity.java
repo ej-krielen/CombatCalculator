@@ -21,6 +21,7 @@ import nl.rekijan.combatcalculator.model.buffs.DivineFavor;
 import nl.rekijan.combatcalculator.model.buffs.DivinePower;
 import nl.rekijan.combatcalculator.model.buffs.EnlargePerson;
 import nl.rekijan.combatcalculator.model.buffs.Flanking;
+import nl.rekijan.combatcalculator.model.buffs.MonstrousPhysiqueGargoyle;
 import nl.rekijan.combatcalculator.model.buffs.PowerAttack;
 import nl.rekijan.combatcalculator.model.buffs.Prayer;
 import nl.rekijan.combatcalculator.utility.dialogs.NumberPickerDialogFragment;
@@ -73,6 +74,8 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
         buffList.add(divinePower);
         final EnlargePerson enlargePerson = new EnlargePerson();
         buffList.add(enlargePerson);
+        final MonstrousPhysiqueGargoyle monstrousPhysiqueGargoyle = new MonstrousPhysiqueGargoyle();
+        buffList.add(monstrousPhysiqueGargoyle);
         attackRoutineModel = new AttackRoutineModel(this, characterModel, characterModel.getAttacks().get(0), buffList); //TODO selectable attack
 
         //Set all text views on startup
@@ -253,6 +256,22 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
                 }
                 enlargePerson.setIsActive(enlargePersonCheckBox.isChecked());
                 adjustAbilityScores(enlargePerson.isActive(), enlargePerson);
+                updateAttackRoutineModel();
+            }
+        });
+
+        //Set check box and its listener
+        final CheckedTextView monstrousPhysiqueGargoyleCheckBox = (CheckedTextView) findViewById(R.id.monstrous_physique_gargoyle_checkBox);
+        monstrousPhysiqueGargoyleCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (monstrousPhysiqueGargoyleCheckBox.isChecked()) {
+                    monstrousPhysiqueGargoyleCheckBox.setChecked(false);
+                } else {
+                    monstrousPhysiqueGargoyleCheckBox.setChecked(true);
+                }
+                monstrousPhysiqueGargoyle.setIsActive(monstrousPhysiqueGargoyleCheckBox.isChecked());
+                adjustAbilityScores(monstrousPhysiqueGargoyle.isActive(), monstrousPhysiqueGargoyle);
                 updateAttackRoutineModel();
             }
         });
