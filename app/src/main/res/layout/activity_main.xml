@@ -175,6 +175,19 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/prayer_checkBox" />
 
+            <CheckedTextView
+                android:id="@+id/enlarge_person_checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
+                android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+                android:padding="8dp"
+                android:text="@string/enlarge_person_label"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divine_power_checkBox" />
+
             <TextView
                 android:id="@+id/character_level_editText"
                 android:layout_width="wrap_content"
@@ -185,7 +198,7 @@
                 android:text="@string/character_level_label"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divine_power_checkBox" />
+                app:layout_constraintTop_toBottomOf="@+id/enlarge_person_checkBox" />
 
             <TextView
                 android:id="@+id/bab_textView"

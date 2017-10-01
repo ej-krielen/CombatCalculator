@@ -14,10 +14,12 @@ import java.util.List;
 import nl.rekijan.combatcalculator.R;
 import nl.rekijan.combatcalculator.model.AttackRoutineModel;
 import nl.rekijan.combatcalculator.model.CharacterStatsModel;
+import nl.rekijan.combatcalculator.model.buffs.AbstractAbilityBuff;
 import nl.rekijan.combatcalculator.model.buffs.AbstractBuff;
 import nl.rekijan.combatcalculator.model.buffs.Bane;
 import nl.rekijan.combatcalculator.model.buffs.DivineFavor;
 import nl.rekijan.combatcalculator.model.buffs.DivinePower;
+import nl.rekijan.combatcalculator.model.buffs.EnlargePerson;
 import nl.rekijan.combatcalculator.model.buffs.Flanking;
 import nl.rekijan.combatcalculator.model.buffs.PowerAttack;
 import nl.rekijan.combatcalculator.model.buffs.Prayer;
@@ -69,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
         buffList.add(prayer);
         final DivinePower divinePower = new DivinePower();
         buffList.add(divinePower);
+        final EnlargePerson enlargePerson = new EnlargePerson();
+        buffList.add(enlargePerson);
         attackRoutineModel = new AttackRoutineModel(this, characterModel, characterModel.getAttacks().get(0), buffList); //TODO selectable attack
 
         //Set all text views on startup
@@ -237,6 +241,22 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
             }
         });
 
+        //Set check box and its listener
+        final CheckedTextView enlargePersonCheckBox = (CheckedTextView) findViewById(R.id.enlarge_person_checkBox);
+        enlargePersonCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (enlargePersonCheckBox.isChecked()) {
+                    enlargePersonCheckBox.setChecked(false);
+                } else {
+                    enlargePersonCheckBox.setChecked(true);
+                }
+                enlargePerson.setIsActive(enlargePersonCheckBox.isChecked());
+                adjustAbilityScores(enlargePerson.isActive(), enlargePerson);
+                updateAttackRoutineModel();
+            }
+        });
+
     }
 
     /**
@@ -364,5 +384,28 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
             dialog.setArguments(bundle);
             dialog.show(getFragmentManager(), DIALOG_MISC_DAMAGE);
         }
+    }
+
+    /**
+     * Adjusts the ability scores based on the buff and sets the TextViews
+     * @param active add or subtract the values
+     * @param buff the buff which contains the values to add/subtract
+     */
+    private void adjustAbilityScores (boolean active, AbstractAbilityBuff buff)
+    {
+        if (active)
+        {
+            characterModel.setStrength(characterModel.getStrength() + buff.getStrenghtAdjustment());
+            characterModel.setDexterity(characterModel.getDexterity() + buff.getDexterityAdjustment());
+        }
+        else
+        {
+            characterModel.setStrength(characterModel.getStrength() - buff.getStrenghtAdjustment());
+            characterModel.setDexterity(characterModel.getDexterity() - buff.getDexterityAdjustment());
+        }
+        strengthTextView.setText(String.format("%s%s", getString(R.string.strength_label), characterModel.getStrength()));
+        strengthModifierTextView.setText(String.format("%s%s", getString(R.string.strength_modifier_label), String.valueOf(characterModel.getStrengthModifier())));
+        dexterityTextView.setText(String.format("%s%s", getString(R.string.dexterity_label), characterModel.getDexterity()));
+        dexterityModifierTextView.setText(String.format("%s%s", getString(R.string.dexterity_modifier_label), String.valueOf(characterModel.getDexterityModifier())));
     }
 }
