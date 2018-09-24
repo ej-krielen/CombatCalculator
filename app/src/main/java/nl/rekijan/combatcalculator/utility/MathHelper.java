@@ -43,9 +43,9 @@ public class MathHelper {
      */
     public int abilityModifier(int abilityScore) {
         if (abilityScore < 10) {
-            return (int) ((abilityScore - 10) / (double) 2);
-        } else {
             return (int) Math.floor(((abilityScore - 10) / (double) 2));
+        } else {
+            return (int) ((abilityScore - 10) / (double) 2);
         }
     }
 

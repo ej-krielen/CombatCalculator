@@ -21,6 +21,9 @@
     <string name="fates_favored_label">Fates Favored</string>
     <string name="prayer_label">Prayer:</string>
     <string name="divine_power_label">Divine Power:</string>
+    <string name="holy_enchant_label">Holy Enchant:</string>
+    <string name="precise_strike_label">Precise Strike:</string>
+    <string name="planar_focus_fire_label">Planar Focus - fire:</string>
     <string name="enlarge_person_label">Enlarge Person:</string>
     <string name="monstrous_physique_gargoyle">Monstrous physique - Gargoyle:</string>
 

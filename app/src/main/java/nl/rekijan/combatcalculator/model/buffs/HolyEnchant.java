@@ -4,26 +4,24 @@ import nl.rekijan.combatcalculator.AppConstants.BuffType;
 import nl.rekijan.combatcalculator.model.AttackModel;
 import nl.rekijan.combatcalculator.model.CharacterStatsModel;
 
-
 /**
- * Logic of flanking bonus
+ * Logic of the holy weapon enchant
  *
  * @author Erik-Jan Krielen ej.krielen@gmail.com
  * @since 20-7-2017
  */
 
-public class Flanking extends AbstractBuff {
+public class HolyEnchant extends AbstractBuff {
 
-    private boolean isOutflankActive;
-    private boolean isPreciseStrikeActive;
+    private boolean isHolyEnchantActive;
 
-    public Flanking() {
-        super("Flanking", BuffType.UNTYPED);
+    public HolyEnchant() {
+        super("Holy Enchant", BuffType.UNTYPED);
     }
 
     @Override
     public int calculateToHit(CharacterStatsModel character, AttackModel attack) {
-        return isOutflankActive ? 4 : 2;
+        return 0;
     }
 
     @Override
@@ -31,11 +29,11 @@ public class Flanking extends AbstractBuff {
         return 0;
     }
 
-    public void setIsOutflankActive(boolean active) {
-        isOutflankActive = active;
+    public boolean isGreaterBaneActive(){
+        return isHolyEnchantActive;
     }
 
-    public boolean isPreciseStrikeActive() { return isPreciseStrikeActive; }
-
-    public void setPreciseStrikeActive(boolean active) { isPreciseStrikeActive = active; }
+    public void setIsGreaterBaneActive(boolean active) {
+        isHolyEnchantActive = active;
+    }
 }

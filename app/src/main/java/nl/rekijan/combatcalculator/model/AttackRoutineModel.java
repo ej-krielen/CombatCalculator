@@ -9,6 +9,7 @@ import java.util.List;
 import nl.rekijan.combatcalculator.R;
 import nl.rekijan.combatcalculator.model.buffs.AbstractBuff;
 import nl.rekijan.combatcalculator.model.buffs.Bane;
+import nl.rekijan.combatcalculator.model.buffs.Flanking;
 import nl.rekijan.combatcalculator.utility.MathHelper;
 
 /**
@@ -63,11 +64,11 @@ public class AttackRoutineModel {
         String fullAttackLabel = context.getString(R.string.full_attack_label);
         String criticalString = TextUtils.isEmpty(attackModel.getCritRange()) ? attackModel.getCritMultiplier() : attackModel.getCritRange() + "/" + attackModel.getCritMultiplier();
 
-        return String.format("%s%s +%s (%s%s+%s %s) %s",
+        return String.format("%s%s +%s (%s%s+%s %s) %s %s %s %s",
                 fullAttackLabel, attackModel.getName(),
                 getAttackRoutineString(),
                 MathHelper.getInstance().getWeaponDamageDiceString(buffs, attackModel.getWeaponDice()),
-                getBaneString(), getTotalDamage(), criticalString, addPolymorphAttacks());
+                getBaneString(), getTotalDamage(), criticalString, getHolyEnchantString(), getPreciseStrikeString(), getPlanarFocusFireString(), addPolymorphAttacks());
     }
 
     /**
@@ -141,6 +142,59 @@ public class AttackRoutineModel {
         }
         return "";
     }
+
+    /**
+     * Goes through all buffs to see if Holy Enchant buff is active
+     *
+     * @return A String with the value "+2d6 vs evil creatures" if true, or an empty string otherwise
+     */
+    private String getHolyEnchantString() {
+        for (AbstractBuff buff : buffs) {
+            if (buff.isActive()) {
+                if (buff.getName().equals("Holy Enchant")) {
+                    return "+2d6 vs evil creatures";
+                }
+            }
+        }
+        return "";
+    }
+
+    /**
+     * Goes through all buffs to see if Precise Strike and Flanking buffs are active
+     *
+     * @return A String with the value "+1d6 precision damage" if true, or an empty string otherwise
+     */
+    private String getPreciseStrikeString() {
+        for (AbstractBuff buff : buffs) {
+            if (buff.isActive()) {
+                if (buff.getName().equals("Flanking")) {
+                    if (((Flanking) buff).isPreciseStrikeActive()) {
+                        return "+1d6 precision damage";
+                    }
+                }
+            }
+        }
+        return "";
+    }
+
+    /**
+     * Goes through all buffs to see if Planar Focus - Fire buff is active
+     *
+     * @return A String with the value "+Xd6 fire damage" if true, or an empty string otherwise
+     */
+    private String getPlanarFocusFireString() {
+        for (AbstractBuff buff : buffs) {
+            if (buff.isActive()) {
+                if (buff.getName().equals("Planar Focus - Fire")) {
+                    int nrDice = (int)Math.floor(characterModel.getCharacterLevel()/4);
+                    return "+" + nrDice + "d6 fire damage";
+                }
+            }
+        }
+        return "";
+    }
+
+
 
     /**
      * //TODO make dynamic

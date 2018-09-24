@@ -21,7 +21,9 @@ import nl.rekijan.combatcalculator.model.buffs.DivineFavor;
 import nl.rekijan.combatcalculator.model.buffs.DivinePower;
 import nl.rekijan.combatcalculator.model.buffs.EnlargePerson;
 import nl.rekijan.combatcalculator.model.buffs.Flanking;
+import nl.rekijan.combatcalculator.model.buffs.HolyEnchant;
 import nl.rekijan.combatcalculator.model.buffs.MonstrousPhysiqueGargoyle;
+import nl.rekijan.combatcalculator.model.buffs.PlanarFocusFire;
 import nl.rekijan.combatcalculator.model.buffs.PowerAttack;
 import nl.rekijan.combatcalculator.model.buffs.Prayer;
 import nl.rekijan.combatcalculator.utility.dialogs.NumberPickerDialogFragment;
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        characterModel = new CharacterStatsModel(10, 10, 7, 18, 14, 0, 0, 0, false); //TODO replace with actual characterModel building
+        characterModel = new CharacterStatsModel(12, 12, 9, 18, 14, 0, 0, 0, true); //TODO replace with actual characterModel building
         characterModel.addAttack("greatsword", "2d6", 2, true, true, false, false, true, false, "19-20", "x2"); //TODO replace with actual attack creator
         final PowerAttack powerAttack = new PowerAttack();
         buffList.add(powerAttack);
@@ -72,6 +74,10 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
         buffList.add(prayer);
         final DivinePower divinePower = new DivinePower();
         buffList.add(divinePower);
+        final HolyEnchant holyEnchant = new HolyEnchant();
+        buffList.add(holyEnchant);
+        final PlanarFocusFire planarFocusFire = new PlanarFocusFire();
+        buffList.add(planarFocusFire);
         final EnlargePerson enlargePerson = new EnlargePerson();
         buffList.add(enlargePerson);
         final MonstrousPhysiqueGargoyle monstrousPhysiqueGargoyle = new MonstrousPhysiqueGargoyle();
@@ -240,6 +246,51 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
                     divinePowerCheckBox.setChecked(true);
                 }
                 divinePower.setIsActive(divinePowerCheckBox.isChecked());
+                updateAttackRoutineModel();
+            }
+        });
+
+        //Set check box and its listener
+        final CheckedTextView holyEnchantCheckBox = (CheckedTextView) findViewById(R.id.holy_enchant_checkBox);
+        holyEnchantCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (holyEnchantCheckBox.isChecked()) {
+                    holyEnchantCheckBox.setChecked(false);
+                } else {
+                    holyEnchantCheckBox.setChecked(true);
+                }
+                holyEnchant.setIsActive(holyEnchantCheckBox.isChecked());
+                updateAttackRoutineModel();
+            }
+        });
+
+        //Set check box and its listener
+        final CheckedTextView preciseStrikeCheckBox = (CheckedTextView) findViewById(R.id.precise_strike_checkBox);
+        preciseStrikeCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (preciseStrikeCheckBox.isChecked()) {
+                    preciseStrikeCheckBox.setChecked(false);
+                } else {
+                    preciseStrikeCheckBox.setChecked(true);
+                }
+                flanking.setPreciseStrikeActive(preciseStrikeCheckBox.isChecked());
+                updateAttackRoutineModel();
+            }
+        });
+
+        //Set check box and its listener
+        final CheckedTextView planarFocusFireCheckBox = (CheckedTextView) findViewById(R.id.planar_focus_fire_checkBox);
+        planarFocusFireCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (planarFocusFireCheckBox.isChecked()) {
+                    planarFocusFireCheckBox.setChecked(false);
+                } else {
+                    planarFocusFireCheckBox.setChecked(true);
+                }
+                planarFocusFire.setIsActive(planarFocusFireCheckBox.isChecked());
                 updateAttackRoutineModel();
             }
         });
